@@ -1,0 +1,190 @@
+
+/*Copyright (c) 2020 by sanchit sharma (https://codepen.io/web_designer_sanchit/pen/eLjvyw)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+*/
+
+/* CSS Reset*/
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,500,600');
+html{height:100%;}
+*, *:before, *:after{
+	padding:0;
+	margin:0;
+	box-sizing: border-box;
+	vertical-align:baseline;
+	text-decoration:none;
+	list-style:none;
+	font-family: "Montserrat", sans-serif;
+}
+
+/* overall heading*/
+h1{text-align:center;margin-top:50px;}
+h4{text-align:center;}
+
+
+/*set up size of the whole timeline */
+.timeline{
+	position: relative;
+	margin: 20px auto;
+	width:1000px;
+	padding:40px 10px;
+}
+
+/*drawing the line itself */
+.timeline:before{
+	content:'';
+	position:absolute;
+	left:50%;
+	width:2px;
+	height:100%;
+	background-color:grey;
+}
+
+.timeline ul {
+	margin:0;
+}
+.album {
+	padding-top: 10px;
+}
+
+/*styling the size of each step/content */
+.timeline ul li{
+	line-height:normal;
+	position:relative;
+	width:50%;
+	padding:20px 40px;
+}
+
+/*for every odd numbered bullet point, align to the left*/
+.timeline ul li:nth-child(odd){
+	text-align:right;
+	float:left;
+	clear:both; /*each step doesn't overlap the other vertically */
+}
+
+/* for every even numbered bullet point, align to the right */
+.timeline ul li:nth-child(even){
+	text-align:left;
+	float:right;
+	clear:both; /*each step doesn't overlap the other vertically */
+}
+
+/*create circle icon on the timeline from the left (odd) */
+.timeline ul li:before {
+	content:'';
+	position:absolute;
+	width:32px;
+	height:32px;
+	background-color:#1abc9c;
+	border-radius:50%;
+}
+
+/*position the circle icons on the timeline*/
+.timeline ul li:nth-child(even):before{
+	left:-16px;
+}
+
+.timeline ul li:nth-child(odd):before{
+	right:-16px;
+}
+
+/* assign numbering*/
+.timeline ul li:nth-child(1):before{content:'1';}
+.timeline ul li:nth-child(2):before{content:'2';}
+.timeline ul li:nth-child(3):before{content:'3';}
+.timeline ul li:nth-child(4):before{content:'4';}
+.timeline ul li:nth-child(5):before{content:'5';}
+.timeline ul li:nth-child(6):before{content:'6';}
+.timeline ul li:nth-child(7):before{content:'7';}
+
+/*styling the numbering. Can't position at the moment */
+.timeline ul li:before{
+	font-weight:900;
+	font-size:1em;
+	padding-top: 6px;
+
+	color:white;
+	text-align:center;
+}
+
+.content{
+	padding-bottom:10px;
+}
+
+.content h3{
+	font-weight:900;
+	color:#16a085;
+}
+
+.content p{
+	margin-top:10px;
+	font-size:0.86em;
+	line-height:1.6em;
+}
+
+/*styling all to next step links*/
+.timeline ul li > .next{
+	background:#f1c40f;
+	position:absolute;
+	border-radius:16px;
+	padding:6px 12px;
+	margin-top: 5px;
+}
+
+.next > h4 > a:link, .next > h4 > a:visited {color:white;}
+
+.timeline ul li > .next:hover{background:#f39c12;}
+
+/*positioning the next step links depending on which side*/
+.timeline ul li:nth-child(odd) > .next{
+	top:16px;
+	right:-170px;
+}
+
+.timeline ul li:nth-child(even) > .next{
+	top:16px;
+	left:-170px;}
+
+
+@media  (max-width: 1000px){
+	.timeline{
+		width:100%;
+	}
+
+	.content h3{
+		font-size:1.8em;
+	}
+	.content p {
+		font-size:1.2em;
+	}
+}
+@media  (max-width: 767px){
+	.timeline{
+		width:100%;
+		padding-bottom:0;
+	}
+	.timeline:before{
+		left:30px;
+	}
+	.timeline li:nth-child(even), .timeline li:nth-child(odd) {
+		width:100%;
+	}
+	.content {
+		top:20px;
+		text-align:left;
+		padding-left:50px;
+		padding-bottom:50px;
+	}
+	.timeline ul li:nth-child(odd):before, 	.timeline ul li:nth-child(even):before{
+		left:14px;
+	}
+
+	.timeline ul li:nth-child(odd) .next, .timeline ul li:nth-child(even) .next{
+		left:90px;
+		top:-30px;
+
+    /* not sure why this works */
+		right:inherit;
+	}
+}

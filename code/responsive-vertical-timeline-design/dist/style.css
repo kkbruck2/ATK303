@@ -8,10 +8,6 @@ h1{
   font-size:60px;
   text-align:center;
 }
-h2{
-  font-size:30px;
-  text-align:center;
-}
 .timeline{
   position:relative;
   margin:50px auto;
@@ -38,15 +34,11 @@ h2{
   padding:20px 40px;
   box-sizing:border-box;
 }
-
-
-
 .timeline ul li:nth-child(odd){
   float:left;
   text-align:right;
   clear:both;
 }
-
 .timeline ul li:nth-child(even){
   float:right;
   text-align:left;
@@ -71,7 +63,7 @@ h2{
 {
   content:'';
   position:absolute;
-  padding: 10px;
+  width:10px;
   height:10px;
   top:24px;
   left:-4px;
@@ -98,7 +90,7 @@ h2{
 {
   position:absolute;
   top:12px;
-  right: -18px;
+  right:-165px;
   margin:0;
   padding:8px 16px;
   background:rgba(233,33,99,1);
@@ -106,14 +98,11 @@ h2{
   border-radius:18px;
   box-shadow:0 0 0 3px rgba(233,33,99,0.3);
 }
-.timeline
-
-
 .timeline ul li:nth-child(even) .time
 {
   position:absolute;
   top:12px;
-  left:-18px;
+  left:-165px;
   margin:0;
   padding:8px 16px;
   background:rgba(233,33,99,1);
