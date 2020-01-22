@@ -139,12 +139,12 @@ h4{text-align:center;}
 /*positioning the next step links depending on which side*/
 .timeline ul li:nth-child(odd) > .next{
 	top:16px;
-	right:-170px;
+	right:-120px;
 }
 
 .timeline ul li:nth-child(even) > .next{
 	top:16px;
-	left:-170px;}
+	left:-120px;}
 
 
 @media  (max-width: 1000px){
