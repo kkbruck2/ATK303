@@ -10,11 +10,16 @@ body, html {
   padding: 0;
 }
 
+.icon {
+  scale: 80%;
+}
 nav h1 {
-  font-family: 'Roboto Condensed', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   color: #eeeeee;
-  font-size: 2.5em;
+  font-size: 1.5em;
   text-align: center;
+  
+  kerning: auto;
 }
 
 // # PAGE STRUCTURE
@@ -27,7 +32,7 @@ nav h1 {
 
 .content-header {
   background: #fff;
-  height: 100px;
+  height: 40px;
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 }
 .content-topic {
@@ -39,7 +44,7 @@ nav h1 {
   align-items: center;
 }
 .section-title {
-  font-size: 1.5em;
+  font-size: 1.2em;
   font-family: 'Open Sans', sans-serif;
   color: rgba(0, 0, 0, 0.25);
   text-align: center;
@@ -69,6 +74,21 @@ nav h1 {
   justify-content: center;
   align-items: center;
 }
+header ul {
+  font-family: 'Open Sans', sans-serif;
+  list-style: none;
+  float: right;
+}
+header li {
+  display: inline;
+  float: right;
+  margin: auto 0;
+  padding: 20px 30px;
+  font-size: 1.2em;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.60);
+}
 
 ul.navigation {
   margin-top: 0px;
@@ -79,14 +99,14 @@ ul.navigation {
 
 .button {
   color: #dddddd;
-  font-family: 'Roboto', sans-serif;
-  font-size: 1.2em;
-  font-kerning: normal;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1.1em;
+  font-kerning: auto;
   font-weight: 400;
-  padding-top: 20px;
+  padding-top: 15px;
   padding-right: auto;
   padding-bottom: 20px;
-  padding-left: 50px;
+  padding-left: 30px;
   margin-bottom: 0;
   margin-left: 0;
   margin-top: 0;
