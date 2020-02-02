@@ -10,16 +10,19 @@ body, html {
   padding: 0;
 }
 
+
 .icon {
-  scale: 80%;
+width: 200px;
+margin-left: 0px;
 }
+
 nav h1 {
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Roboto', sans-serif;
   color: #eeeeee;
   font-size: 1.5em;
-  text-align: center;
-  
   kerning: auto;
+  padding-left: 30px;
+  padding-bottom: 15px;
 }
 
 // # PAGE STRUCTURE
@@ -29,34 +32,113 @@ nav h1 {
   min-height: 100vh;
 }
 
-
-.content-header {
-  background: #fff;
-  height: 40px;
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
-}
-.content-topic {
-  position: inherit;
-}
-.flex-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.section-title {
-  font-size: 1.2em;
-  font-family: 'Open Sans', sans-serif;
-  color: rgba(0, 0, 0, 0.25);
-  text-align: center;
+.site-header {
+  border-style: none none solid none;
+  border-color: #333333;
+  border-width: 3px;
 }
 
-.site-nav {
+.app-dev {
+
+}
+.pages {
+  list-style: none;
+}
+.pages-item a{
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.1em;
+  float: right;
+  padding: 20px 50px;
+  font-weight: 400;
+  color: #111;
+  display: inline;
+  text-decoration: none;
+}
+
+/* *:before, *:after {
+ box-sizing: inherit;
+} */
+
+.site-footer {
+ display: flex;
+}
+
+.site-footer {
+ background-color: #333536;
+ height: 200px;
+ color: #fff;
+}
+/* ------------------------------------------------navigation */
+.sidebar-area {
   background: #333333;
   width: 20%;
   float: left;
   height: 100vh;
 }
 
+
+.side-navigation.fixed {
+  float: left;
+  height: 100vh;
+}
+.side-navigation.bottom {
+ position: absolute;
+ bottom: 0;
+ top: auto;
+ width: 290px;
+}
+.side-navigation .menu {
+ padding-top: 15px;
+ list-style-type: none;
+}
+.side-navigation .menu-item {
+ position: relative;
+}
+.side-navigation .menu-item:before {
+ content: '';
+ position: absolute;
+ top: 0;
+ left: 0;
+ bottom: 0;
+ width: 0;
+ background-color: #639341;
+ transition: width .3s ease-in;
+}
+.side-navigation .menu-item:hover:before {
+ width: 100%;
+}
+
+.side-navigation .menu-item a {
+ color: #fff;
+ font-family: 'Roboto', sans-serif;
+ font-size: 1.1em;
+ font-kerning: auto;
+ font-weight: 400;
+ text-decoration: none;
+ position: relative;
+ display: block;
+ padding-top: 15px;
+ padding-right: auto;
+ padding-bottom: 15px;
+ padding-left: 30px;
+}
+/* -----------------------------------------main information */
+.content-topic {
+  position: inherit;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.section-title {
+  font-size: 1.2em;
+  font-family: 'Roboto', sans-serif;
+  color: rgba(0, 0, 0, 0.25);
+  text-align: center;
+}
 
 .site-content {
   width: 80%;
@@ -74,53 +156,37 @@ nav h1 {
   justify-content: center;
   align-items: center;
 }
-header ul {
-  font-family: 'Open Sans', sans-serif;
-  list-style: none;
-  float: right;
-}
-header li {
-  display: inline;
-  float: right;
-  margin: auto 0;
-  padding: 20px 30px;
-  font-size: 1.2em;
-  font-family: 'Open Sans', sans-serif;
-  font-weight: 400;
-  color: rgba(0, 0, 0, 0.60);
-}
 
-ul.navigation {
+
+.side-navigation.menu {
   margin-top: 0px;
   margin-left: 0px;
   margin-bottom: auto;
   list-style: none;
 }
 
-.button {
-  color: #dddddd;
-  font-family: 'Open Sans', sans-serif;
+/* .side-navigation .menu-item {
+  color: #eeeeee;
+  font-family: 'Roboto', sans-serif;
   font-size: 1.1em;
   font-kerning: auto;
   font-weight: 400;
   padding-top: 15px;
   padding-right: auto;
-  padding-bottom: 20px;
+  padding-bottom: 15px;
   padding-left: 30px;
   margin-bottom: 0;
   margin-left: 0;
   margin-top: 0;
-}
+} */
 
-li.button:hover {
-  background: #639341;
-}
+/* .side-navigation .menu-item:hover {
+  transition: width .3s ease-in;
+  background-color: #639341;
+} */
 
-li a {
-  text-decoration: none;
-  color: #ffffff;
-  margin-left: 0;
-}
+
+
 
 .ddtitle {
   font-family: 'Roboto Slab', serif;
@@ -142,7 +208,7 @@ li a {
 }
 
 .parallax__group {
-  position: relative;
+  position:relative;
   height: 500px;
   /* fallback for older browsers */
   height: 100vh;
@@ -170,11 +236,11 @@ li a {
   z-index: 4;
 }
 
-/*
+
 #over1 {
     position: 300px;
 }
-*/
+
 .parallax__layer--back {
   -webkit-transform: translateZ(-300px) scale(2);
   transform: translateZ(-300px) scale(2);
@@ -202,9 +268,9 @@ li a {
 
 /* demo styles
   --------------------------------------------- */
-.parallax {
-  font-size: 1.2em;
-}
+/* .parallax {
+  font-size: 1em;
+} */
 
 .icon {
   transform: scale(.75);
@@ -253,20 +319,23 @@ li a {
 }
 
 .appPages {
-  height: 80vh;
-  float: right;
+  position: absolute;
+  top: 20px;
+  width: 40%;
+  right: 20px;
 }
 
 .ddlogo {
-  position: relative;
+  position: absolute;
   width: 50%;
   left: 2%;
   top: 5%;
-  display: block;
+  height: auto;
+  display: inline-flex;
 }
 
-.arts {
-  position: absolute;
+.artsSample {
+  position: relative;
   background-color: #ffffff;
   width: 100%;
   height: 100vh;
@@ -277,15 +346,15 @@ li a {
   font-family: 'Roboto Condensed', sans-serif;
   position: relative;
   background-color: #33333399;
-  border-style: solid;
+  border-style: solid none solid solid;
   border-color: #333333;
   border-width: 3px;
   color: #dddddd;
-  font-size: 1.2em;
+  font-size: 1.5em;
   font-stretch: ultra-expanded;
   top: 50%;
   right: 0;
-  padding: 20px 50px;
+  padding: 10px 50px;
   text-align: right;
   margin-left: 65%;
 }
@@ -294,17 +363,16 @@ li a {
   font-family: 'Roboto Condensed', sans-serif;
   position: relative;
   background-color: #33333399;
-  border-style: solid none solid none;
+  border-style: none none solid none;
   border-color: #333333;
   border-width: 3px;
-  color: #dddddd;
-  font-size: 2em;
+  color: #eeeeee;
+  font-size: 1.5em;
   font-stretch: ultra-expanded;
-  bottom: 50%;
+  top: 50%;
   right: 0;
-  padding: 15px 120px;
-  width: 100%;
-  text-align: center;
+  padding: 10px 50px;
+  text-align: right;
 }
 
 .titleO {
@@ -314,10 +382,10 @@ li a {
   border-style: solid solid solid none;
   border-color: #333333;
   border-width: 3px;
-  color: #dddddd;
-  font-size: 1.5em;
+  color: #eeeeee;
+  font-size: 1em;
   font-weight: bold;
-  padding: 15px 120px;
+  padding: 10px 120px;
   text-align: left;
   left: 15%;
   bottom: -35px;
@@ -325,7 +393,7 @@ li a {
   transform: translate(-50%, -50%);
 }
 
-.titletop {
+.title1 {
   font-family: 'Roboto Condensed', sans-serif;
   position: absolute;
   background-color: #33333399;
@@ -333,9 +401,9 @@ li a {
   border-color: #333333;
   border-width: 3px;
   color: #dddddd;
-  font-size: 1.5em;
+  font-size: 1em;
   font-weight: bold;
-  padding: 15px 120px;
+  padding: 10px 120px;
   text-align: left;
   left: 10%;
   top: 34px;
@@ -347,11 +415,11 @@ li a {
   font-size: .8em;
   font-family: 'Roboto', sans-serif;
   color: #dddddd;
-  top: 10%;
-  margin-top: 0;
-  margin-left: 20px;
-  line-height: 1.50;
-  width: 40%;
+  top: 20%;
+  margin-top: 50px;
+  margin-left: 30px;
+  line-height: 1.75;
+  width: 50%;
   padding: 20px 20px;
   background-color: #666666;
   position: relative;
@@ -360,6 +428,38 @@ li a {
   border-color: #333333;
   border-width: 3px;
   color: #dddddd;
+}
+#UIdilemma {
+  position: absolute;
+  bottom: -70px;
+  display: flex;
+
+
+
+
+}
+.UIdrive {
+
+
+
+
+width: 45%;
+
+float: left;
+
+margin-left: auto;
+margin-right: 20px;
+
+
+}
+.UIreverse {
+
+
+  width: 45%;
+  margin-left: 20px;
+  margin-right: auto;
+
+
 }
 
 /* style the groups
@@ -370,7 +470,7 @@ li a {
 }
 
 #group1 .parallax__layer--base {
-  background: rgb(102, 204, 102, 0);
+  background: #eeeeee;
 }
 
 #group2 {
@@ -410,7 +510,7 @@ li a {
 }
 
 #group6 {
-  z-index: 2;
+  z-index: 4;
   /* slide under group 5 and 7 */
 }
 

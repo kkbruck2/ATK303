@@ -1,10 +1,4 @@
 //javascript sketch
-var debugInput = document.querySelector("input");
-function updateDebugState() {
-    document.body.classList.toggle('debug-on', debugInput.checked);
-}
-debugInput.addEventListener("click", updateDebugState);
-updateDebugState();
 
 /*
 * Fix sidebar at some point and remove
