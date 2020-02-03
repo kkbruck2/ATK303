@@ -1,6 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400);
 
-body, html {
+ body, html {
   overflow: hidden;
   font-size: 1em;
 }
@@ -9,7 +9,6 @@ body, html {
   margin: 0;
   padding: 0;
 }
-
 
 .icon {
 width: 200px;
@@ -33,14 +32,13 @@ nav h1 {
 }
 
 .site-header {
+  background-color: #fff;
   border-style: none none solid none;
-  border-color: #333333;
+  border-color: #333;
   border-width: 3px;
 }
 
-.app-dev {
 
-}
 .pages {
   list-style: none;
 }
@@ -59,17 +57,18 @@ nav h1 {
  box-sizing: inherit;
 } */
 
-.site-footer {
+/* .site-footer {
  display: flex;
-}
+} */
 
-.site-footer {
+/* .site-footer {
  background-color: #333536;
  height: 200px;
  color: #fff;
-}
+} */
 /* ------------------------------------------------navigation */
 .sidebar-area {
+  position: inherit;
   background: #333333;
   width: 20%;
   float: left;
@@ -123,8 +122,11 @@ nav h1 {
  padding-left: 30px;
 }
 /* -----------------------------------------main information */
+
+
 .content-topic {
   position: inherit;
+  margin-bottom: 0;
 }
 
 .flex-center {
@@ -146,6 +148,8 @@ nav h1 {
   flex: 1;
   display: flex;
   flex-direction: column;
+  height; 100vh;
+
 }
 
 
@@ -161,7 +165,7 @@ nav h1 {
 .side-navigation.menu {
   margin-top: 0px;
   margin-left: 0px;
-  margin-bottom: auto;
+  margin-bottom: 0px;
   list-style: none;
 }
 
@@ -186,8 +190,6 @@ nav h1 {
 } */
 
 
-
-
 .ddtitle {
   font-family: 'Roboto Slab', serif;
 }
@@ -205,6 +207,7 @@ nav h1 {
   -webkit-perspective: 300px;
   -webkit-overflow-scrolling: touch;
   perspective: 300px;
+
 }
 
 .parallax__group {
@@ -237,14 +240,18 @@ nav h1 {
 }
 
 
-#over1 {
-    position: 300px;
-}
+
 
 .parallax__layer--back {
   -webkit-transform: translateZ(-300px) scale(2);
   transform: translateZ(-300px) scale(2);
   z-index: 3;
+}
+.backCrop {
+  -webkit-transform: translateZ(300px) scale(2);
+  transform: translateZ(300px) scale(2);
+  z-index: 3;
+
 }
 
 .parallax__layer--deep {
@@ -279,23 +286,19 @@ nav h1 {
 .over1 {
   position: absolute;
   left: 0;
-  top: 50%;
-  width: 100%;
+  top: 0%;
   height: 100vh;
 }
 
 .vectorLine {
   position: absolute;
-  width: 100%;
   height: 100vh;
-  top: -50%;
+  bottom:0;
   left: 9px;
-  transform: scale(1.01);
 }
 
 .flower {
   position: absolute;
-  width: 100%;
   height: 100vh;
 }
 
@@ -317,28 +320,32 @@ nav h1 {
   width: 100%;
   height: 100vh;
 }
-
+.appBkg {
+  background-color: #ddd;
+}
 .appPages {
   position: absolute;
-  top: 20px;
-  width: 40%;
-  right: 20px;
+  margin-top: 10%;
+  margin-bottom: auto;
+  width: 50%;
+  right: 2%;
 }
 
 .ddlogo {
   position: absolute;
-  width: 50%;
-  left: 2%;
-  top: 5%;
+  width: 40%;
+  left: 30px;
+  top: 20px;
   height: auto;
   display: inline-flex;
 }
 
-.artsSample {
-  position: relative;
-  background-color: #ffffff;
+.arts{
   width: 100%;
-  height: 100vh;
+  position: absolute;
+  height: auto;
+  margin-bottom: 100px;
+
 }
 
 /* centre the content in the parallax layers */
@@ -412,17 +419,17 @@ nav h1 {
 }
 
 .purposeText {
-  font-size: .8em;
+  position: relative;
+  font-size: .9em;
   font-family: 'Roboto', sans-serif;
   color: #dddddd;
-  top: 20%;
-  margin-top: 50px;
-  margin-left: 30px;
-  line-height: 1.75;
-  width: 50%;
-  padding: 20px 20px;
+  margin-top: 10%;
+  margin-left: 3%;
+  line-height: 1.5;
+  width: 38%;
+  padding: 10px 20px;
   background-color: #666666;
-  position: relative;
+
   background-color: #33333399;
   border-style: solid;
   border-color: #333333;
@@ -430,31 +437,21 @@ nav h1 {
   color: #dddddd;
 }
 #UIdilemma {
-  position: absolute;
-  bottom: -70px;
+  position: relative;
+  bottom: -100px;
   display: flex;
-
-
-
-
+  100vh;
 }
 .UIdrive {
-
-
-
-
+top: auto;
 width: 45%;
-
 float: left;
-
 margin-left: auto;
 margin-right: 20px;
 
 
 }
 .UIreverse {
-
-
   width: 45%;
   margin-left: 20px;
   margin-right: auto;
@@ -465,12 +462,13 @@ margin-right: 20px;
 /* style the groups
   --------------------------------------------- */
 #group1 {
-  z-index: 5;
+  z-index: 4;
   /* slide over group 2 */
 }
 
 #group1 .parallax__layer--base {
-  background: #eeeeee;
+  background-color: #cccccc;
+
 }
 
 #group2 {
@@ -479,7 +477,7 @@ margin-right: 20px;
 }
 
 #group2 .parallax__layer--back {
-  background: rgb(123, 210, 102, 0);
+
 }
 
 #group3 {
@@ -488,7 +486,7 @@ margin-right: 20px;
 }
 
 #group3 .parallax__layer--base {
-  background: rgb(153, 216, 101, 0);
+
 }
 
 #group4 {
@@ -497,7 +495,7 @@ margin-right: 20px;
 }
 
 #group4 .parallax__layer--deep {
-  background: #ffffff;
+
 }
 
 #group5 {
@@ -506,7 +504,7 @@ margin-right: 20px;
 }
 
 #group5 .parallax__layer--base {
-  background: rgb(214, 229, 100, 0);
+
 }
 
 #group6 {
@@ -515,7 +513,7 @@ margin-right: 20px;
 }
 
 #group6 .parallax__layer--back {
-  background: #999999;
+
 }
 
 #group7 {
@@ -524,7 +522,7 @@ margin-right: 20px;
 }
 
 #group7 .parallax__layer--base {
-  background: #ffffff;
+
 }
 
 /*Code for animated side bar  */
