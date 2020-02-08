@@ -12,10 +12,10 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <title>Kim Brucker's Portfolio 2020</title>
-<!-- javascript=============================================== -->
+  <!-- javascript=============================================== -->
   <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 
-  <script src="js/sketch.js"></script>
+  <!-- javascript============================fadeToggle=================== -->
   <script>
     $(document).ready(function() {
       $("#mybutton").click(function() {
@@ -23,7 +23,23 @@
       });
     });
   </script>
-<!-- styles=================================================== -->
+
+  <!-- javascript===============================scroll================ -->
+
+  <script type="text/javascript">
+    $(function() {
+      $('nav side-navigation a').bind('click', function(event) {
+        var $anchor = $(this);
+        $('*').stop().animate({
+          scrollTop: $($anchor.attr('href')).offset().top - 0
+        }, 1000);
+        event.preventDefault();
+      });
+    });
+  </script>
+
+  <!-- styles=================================================== -->
+  
   <style type="text/css"></style>
   <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
   <link rel="author" href="https://plus.google.com/u/0/109859280204979591787/about" />
@@ -38,13 +54,13 @@
 
 
 <body class='site'>
-  <div id="homeStart" class="sidebar-area">
+  <div class="sidebar-area">
 
     <nav class='side-navigation'>
       <img class="icon" src="img/SVG/kbicon.svg" alt="Kim Brucker Icon">
       <h1>KIM BRUCKER</h1>
       <ul class="menu">
-        <li class="menu-item"><a href="#homeStart">Home</a></li>
+        <li class="menu-item"><a href="#home">Home</a></li>
         <li class='menu-item'><a href="#group1">App Development</a></li>
         <li class='menu-item'><a href="#group2">Illustration</a></li>
         <li class='menu-item'><a href="#group4">Animation</a></li>
@@ -53,15 +69,17 @@
       </ul>
     </nav>
   </div>
-  <main class="site-content">
 
+  <main class="site-content">
     <header class="site-header">
       <ul class="pages">
         <li class="pages-item"><a href="#">About</a></li>
         <li class="pages-item"><a href="#">Contact</a></li>
       </ul>
     </header>
-    <div class="introTitle">INSTRUCTIONAL UI/UX DEVELOPMENT</div>
+
+    <div id="home" class="introTitle">INSTRUCTIONAL UI/UX DEVELOPMENT</div>
+
 
     <div class="content-topic">
 
@@ -158,7 +176,7 @@
         </div>
 
         <!-- <div id="group7" class="parallax__group">
-          <div class="parallax__layer parallax__layer--base"></div>
+          <div class="parallax__layer parallax__layer====base"></div>
         </div> -->
       </div>
     </div>

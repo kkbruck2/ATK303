@@ -8,6 +8,12 @@
  * Fix sidebar at some point and remove
  * fixed position at content bottom
  */
+ $(document).ready(function() {
+   $("#mybutton").click(function() {
+     $(".peekaboo").fadeToggle();
+   });
+ });
+
 $(window).scroll(function() {
   var pageHeight = $('.site').innerHeight();
   var headerHeight = $('.site-header').innerHeight();
@@ -22,15 +28,11 @@ $(window).scroll(function() {
     $('.side-navigation').removeClass('fixed');
   }
 
-  // if (trigger >= sidebarBottomPos) {
-  //   $('.side-navigation').addClass('bottom');
-  // } else {
-  //   $('.side-navigation').removeClass('bottom');
-  // }
 });
 
+
 $(function() {
-  $('nav a .side-navigation').bind('click', function(event) {
+  $('nav a').bind('click',function(event){
     var $anchor = $(this);
     $('html, body').stop().animate({
       scrollTop: $($anchor.attr('href')).offset().top - 0
@@ -38,7 +40,3 @@ $(function() {
     event.preventDefault();
   });
 });
-/*
- * Fix sidebar at some point and remove
- * fixed position at content bottom
- */

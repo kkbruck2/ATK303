@@ -11,8 +11,8 @@ html body {
 }
 
 .icon {
-width: 200px;
-margin-left: 0px;
+  width: 200px;
+  margin-left: 0px;
 }
 
 nav h1 {
@@ -25,43 +25,66 @@ nav h1 {
 }
 
 // # PAGE STRUCTURE
-
 .site {
   display: flex;
   min-height: 100vh;
 }
+#top-home {
+  z-index: 10;
+}
 
 .site-header {
-
   background-color: #fff;
   border-style: none none solid none;
   border-color: #333;
   border-width: 3px;
+
 }
 
 
 .pages {
   list-style: none;
+  display: inline;
 }
-.pages-item a{
+/* .pages-item:hover {
+
+}
+.pages-item:hover::before {
+
+} */
+.pages-item a {
   font-family: 'Roboto', sans-serif;
   font-size: 1.1em;
   float: right;
-  padding: 20px 50px;
+  margin-right: 50px;
+  padding: 15px 20px;
   font-weight: 400;
   color: #111;
-  display: inline;
   text-decoration: none;
+}
+
+.introTitle {
+  position: relative;
+  font-family: 'Roboto Condensed', sans-serif;
+  background-color: #33333399;
+  border-style: none none solid none;
+  border-color: #333333;
+  border-width: 3px;
+  color: #eeeeee;
+  font-size: 1.5em;
+  font-stretch: ultra-expanded;
+  top: 50%;
+  right: 0;
+  padding: 10px 50px;
+  text-align: right;
 }
 
 /* *:before, *:after {
  box-sizing: inherit;
 } */
-
 /* .site-footer {
  display: flex;
 } */
-
 /* .site-footer {
  background-color: #333536;
  height: 200px;
@@ -69,76 +92,66 @@ nav h1 {
 } */
 /* ------------------------------------------------navigation */
 .sidebar-area {
-
-
+  position: fixed;
   background: #333333;
   width: 20%;
   float: left;
   height: 100vh;
 }
 
-
 .side-navigation.fixed {
-position: fixed;
+  position: fixed;
   float: left;
   height: 100vh;
 }
-.side-navigation.bottom {
- position: fixed;
- bottom: 0;
- top: auto;
- width: 290px;
+.side-navigation.menu {
+  margin-top: 0px;
+  margin-left: 0px;
+  margin-bottom: 0px;
+  list-style: none;
 }
-.side-navigation .menu {
- padding-top: 15px;
- list-style-type: none;
-}
+
 .side-navigation .menu-item {
- position: relative;
+  position: relative;
 }
+
 .side-navigation .menu-item:before {
- content: '';
- position: absolute;
- top: 0;
- left: 0;
- bottom: 0;
- width: 0;
- background-color: #639341;
- transition: width .3s ease-in;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  background-color: #639341;
+  transition: width .3s ease-in;
 }
+
 .side-navigation .menu-item:hover:before {
- width: 100%;
+  width: 100%;
 }
 
 .side-navigation .menu-item a {
- color: #fff;
- font-family: 'Roboto', sans-serif;
- font-size: 1.1em;
- font-kerning: auto;
- font-weight: 400;
- text-decoration: none;
- position: relative;
- display: block;
- padding-top: 15px;
- padding-right: auto;
- padding-bottom: 15px;
- padding-left: 30px;
+  color: #fff;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.1em;
+  font-kerning: auto;
+  font-weight: 400;
+  text-decoration: none;
+  position: relative;
+  display: block;
+  padding-top: 15px;
+  padding-right: auto;
+  padding-bottom: 15px;
+  padding-left: 30px;
 }
+
 /* -----------------------------------------main information */
 
-#homeStart {
-
-}
 .content-topic {
-  position: inherit;
+  position: relative;
   margin-bottom: 0;
 }
 
-.flex-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 
 .section-title {
   font-size: 1.2em;
@@ -148,31 +161,18 @@ position: fixed;
 }
 
 .site-content {
+position: fixed;
   width: 80%;
   left: 20%;
   flex: 1;
   display: flex;
   flex-direction: column;
-  height; 100vh;
+  height;
 
 }
 
 
 
-// # TITLES
-.flex-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-
-.side-navigation.menu {
-  margin-top: 0px;
-  margin-left: 0px;
-  margin-bottom: 0px;
-  list-style: none;
-}
 
 /* .side-navigation .menu-item {
   color: #eeeeee;
@@ -188,13 +188,10 @@ position: fixed;
   margin-left: 0;
   margin-top: 0;
 } */
-
 /* .side-navigation .menu-item:hover {
   transition: width .3s ease-in;
   background-color: #639341;
 } */
-
-
 .ddtitle {
   font-family: 'Roboto Slab', serif;
 }
@@ -212,11 +209,10 @@ position: fixed;
   -webkit-perspective: 300px;
   -webkit-overflow-scrolling: touch;
   perspective: 300px;
-
 }
 
 .parallax__group {
-  position:relative;
+  position: relative;
   height: 500px;
   /* fallback for older browsers */
   height: 100vh;
@@ -244,19 +240,16 @@ position: fixed;
   z-index: 4;
 }
 
-
-
-
 .parallax__layer--back {
   -webkit-transform: translateZ(-300px) scale(2);
   transform: translateZ(-300px) scale(2);
   z-index: 3;
 }
+
 .backCrop {
   -webkit-transform: translateZ(300px) scale(2);
   transform: translateZ(300px) scale(2);
   z-index: 3;
-
 }
 
 .parallax__layer--deep {
@@ -283,7 +276,6 @@ position: fixed;
 /* .parallax {
   font-size: 1em;
 } */
-
 .icon {
   transform: scale(.75);
 }
@@ -291,47 +283,56 @@ position: fixed;
 .over1 {
   position: absolute;
   left: 0;
-  top: 0%;
+  top: 0;
+    width: auto;
   height: 100vh;
 }
 
 .vectorLine {
   position: absolute;
+    width: auto;
   height: 100vh;
-  bottom:0;
-  left: 9px;
 }
 
 .flower {
   position: absolute;
+    width: auto;
   height: 100vh;
 }
 
 .animationBkg {
   position: absolute;
-  width: 100%;
+width: auto;
   height: 100vh;
+}
+.animationCell {
+  position: absolute;
+    width: 100%;
+  height: 100vh;
+
 }
 
 .processes {
   position: absolute;
-  width: 100%;
+    width: 100%;
   height: 100vh;
 }
 
 .wood {
   position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 100vh;
+    width: 100%;
+  height:100vh;
 }
+
 .appBkg {
   background-color: #ddd;
 }
+
 .appPages {
   position: absolute;
   margin-top: 10%;
   margin-bottom: auto;
+  margin-left: 2%;
   width: 50%;
   right: 2%;
 }
@@ -342,15 +343,13 @@ position: fixed;
   left: 30px;
   top: 20px;
   height: auto;
-  display: inline-flex;
 }
 
-.arts{
+.arts {
   width: 100%;
   position: absolute;
   height: auto;
   margin-bottom: 100px;
-
 }
 
 /* centre the content in the parallax layers */
@@ -371,21 +370,7 @@ position: fixed;
   margin-left: 65%;
 }
 
-.introTitle {
-  font-family: 'Roboto Condensed', sans-serif;
-  position: relative;
-  background-color: #33333399;
-  border-style: none none solid none;
-  border-color: #333333;
-  border-width: 3px;
-  color: #eeeeee;
-  font-size: 1.5em;
-  font-stretch: ultra-expanded;
-  top: 50%;
-  right: 0;
-  padding: 10px 50px;
-  text-align: right;
-}
+
 
 .titleO {
   font-family: 'Roboto Condensed', sans-serif;
@@ -424,44 +409,45 @@ position: fixed;
 }
 
 .purposeText {
-  position: relative;
+  position: absolute;
+  top: 120px;
+  bottom: 40px;
   font-size: .9em;
   font-family: 'Roboto', sans-serif;
   color: #dddddd;
-  margin-top: 10%;
-  margin-left: 3%;
+  margin-left: 30px;
+
   line-height: 1.5;
-  width: 38%;
+  width: 40%;
   padding: 10px 20px;
   background-color: #666666;
-
   background-color: #33333399;
   border-style: solid;
   border-color: #333333;
   border-width: 3px;
   color: #dddddd;
+  float: left;
 }
+
 #UIdilemma {
   position: relative;
   bottom: -100px;
   display: flex;
   100vh;
 }
+
 .UIdrive {
-top: auto;
-width: 45%;
-float: left;
-margin-left: auto;
-margin-right: 20px;
-
-
+  top: auto;
+  width: 45%;
+  float: left;
+  margin-left: auto;
+  margin-right: 20px;
 }
+
 .UIreverse {
   width: 45%;
   margin-left: 20px;
   margin-right: auto;
-
-
 }
 
 /* style the groups
@@ -473,7 +459,6 @@ margin-right: 20px;
 
 #group1 .parallax__layer--base {
   background-color: #cccccc;
-
 }
 
 #group2 {
@@ -481,54 +466,42 @@ margin-right: 20px;
   /* slide under groups 1 and 3 */
 }
 
-#group2 .parallax__layer--back {
-
-}
+#group2 .parallax__layer--back {}
 
 #group3 {
   z-index: 4;
   /* slide over group 2 and 4 */
 }
 
-#group3 .parallax__layer--base {
-
-}
+#group3 .parallax__layer--base {}
 
 #group4 {
   z-index: 2;
   /* slide under group 3 and 5 */
 }
 
-#group4 .parallax__layer--deep {
-
-}
+#group4 .parallax__layer--deep {}
 
 #group5 {
   z-index: 3;
   /* slide over group 4 and 6 */
 }
 
-#group5 .parallax__layer--base {
-
-}
+#group5 .parallax__layer--base {}
 
 #group6 {
   z-index: 4;
   /* slide under group 5 and 7 */
 }
 
-#group6 .parallax__layer--back {
-
-}
+#group6 .parallax__layer--back {}
 
 #group7 {
   z-index: 3;
   /* slide over group 7 */
 }
 
-#group7 .parallax__layer--base {
-
-}
+#group7 .parallax__layer--base {}
 
 /*Code for animated side bar  */
 /**
