@@ -322,10 +322,12 @@ header {
 
 @keyframes sketch-ani {
 0%   {opacity: 0;}
-100% {opacity: 1}
+25% {opacity: .5}
+50% {opacity: 1}
+100% {opacity: 0}
 }
 
-}
+
 
 .vectorLine {
   position: absolute;
