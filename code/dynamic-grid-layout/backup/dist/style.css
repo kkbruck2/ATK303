@@ -1,0 +1,17 @@
+.grid-autofill {
+  --grid-col-min: 1fr;
+  display: grid;
+  grid-gap: 8px;
+  /* Create as many columns that are at least `--grid-col-min` (e.g. 200px) wide as possible. auto-fill means if there is only one row then the items won't be stretched out to fill all the remaining space, instead there shall be a column but it shall be empty. Try changing it to auto-fit to see a difference
+  */
+  grid-template-columns: repeat(auto-fill, minmax(var(--grid-col-min), 1fr)); 
+}
+
+
+/* Fluff because custom spacing at differing breakpoints is really easy */
+@media (min-width: 600px) { .grid-autofill { grid-gap: 16px; } }
+
+/* Fluff for the demo so you can see boxes */
+body { margin: 0 auto; padding: 0 16px; max-width: 1008px; }
+.grid-autofill { background-color: #bbb; }
+.grid-autofill > * { background-color: #888; }

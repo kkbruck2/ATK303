@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - Dynamic Grid Layout </title>
+  <link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<h1>Dynamic Grid Layout</h1>
+
+<p>I've got a list of things, I don't know how long the list is and I want to display them in a number of columns across the page. The layout should be repsonsive so to fit as many items into a row as possible.</p>
+  
+<p>The old solution to this was to use some kind of grid system and explictly state the width of every item at a varying range of breakpoints. This was annoying as you had to think about multiple viewports:<br>
+<strong>100% wide by default, then then 50% when the viewport is greater than 400px, then 33% when the viewport is greater than 600px, then 25% when the viewport is greater than 800px.</strong> And so upwards until you get sick of naming breakpoints</p>
+
+<p>The new solution is to use CSS grid. Grid allows you to create a variable number of columns based on the minimum size of a single column. This scales without having to be explicit about every breakpoint:<br>
+  <strong>An item must be at least 200px wide. Fit as many items in a row as you can.</strong> Much simpler as we no longer have to think about multiple viewport-based breakpoints.</p>
+
+<p>As an aid to reusability you can define that minimum value as a CSS variable, which allows you to configure it within your HTML if you've got multiple listings whose minimum size should be different widths</p>
+
+ <div class="grid-autofill" style="--grid-col-min: 300px;">
+  <div>First (at least 300px wide)</div>
+  <div>Second</div>
+  <div>Third</div>
+</div>
+
+<hr>
+  
+<div class="grid-autofill" style="--grid-col-min: 200px;">
+  <div>First (at least 200px wide)</div>
+  <div>Second</div>
+  <div>Third</div>
+  <div>Fourth</div>
+  <div>Fifth</div>
+  <div>Sixth</div>
+  <div>Seventh</div>
+  <div>Eighth</div>
+  <div>Nineth</div>
+</div>
+
+<hr>
+
+<div class="grid-autofill" style="--grid-col-min: 120px;">
+  <div>First (at least 120px wide)</div>
+  <div>Second</div>
+  <div>Third</div>
+  <div>Fourth</div>
+  <div>Fifth</div>
+  <div>Sixth</div>
+  <div>Seventh</div>
+  <div>Eighth</div>
+  <div>Nineth</div>
+</div>
+
+<hr>
+
+<p>PS no you can't do this with flexbox, as the final row's items would strech to fill the width of that row, meaning they end up being a different width to the items in the other rows.</p>
+<!-- partial -->
+  
+</body>
+</html>

@@ -28,7 +28,7 @@
 
   <script type="text/javascript">
     $(function() {
-      $('nav side-navigation a').bind('click', function(event) {
+      $('.side-navigation a').bind('click', function(event) {
         var $anchor = $(this);
         $('*').stop().animate({
           scrollTop: $($anchor.attr('href')).offset().top - 0
@@ -39,7 +39,7 @@
   </script>
 
   <!-- styles=================================================== -->
-  
+
   <style type="text/css"></style>
   <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
   <link rel="author" href="https://plus.google.com/u/0/109859280204979591787/about" />
@@ -55,35 +55,34 @@
 
 <body class='site'>
   <div class="sidebar-area">
-
     <nav class='side-navigation'>
       <img class="icon" src="img/SVG/kbicon.svg" alt="Kim Brucker Icon">
       <h1>KIM BRUCKER</h1>
       <ul class="menu">
         <li class="menu-item"><a href="#home">Home</a></li>
-        <li class='menu-item'><a href="#group1">App Development</a></li>
+        <li class='menu-item'><a href="#home">App Development</a></li>
         <li class='menu-item'><a href="#group2">Illustration</a></li>
-        <li class='menu-item'><a href="#group4">Animation</a></li>
-        <li class='menu-item'><a href="#group5">Game Development</a></li>
-        <li class='menu-item'><a href="#group6">Arts</a></li>
+        <li class='menu-item'><a href="#group5">Animation</a></li>
+        <li class='menu-item'><a href="#group6">Game Development</a></li>
+        <li class='menu-item'><a href="#group7">Arts</a></li>
       </ul>
     </nav>
   </div>
 
-  <main class="site-content">
-    <header class="site-header">
-      <ul class="pages">
-        <li class="pages-item"><a href="#">About</a></li>
-        <li class="pages-item"><a href="#">Contact</a></li>
-      </ul>
+  <main id="home">
+
+
+    <header>
+      <div class="top-nav">
+        <ul class="pages">
+          <li class="pages-item"><a href="#">About</a></li>
+          <li class="pages-item"><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="introTitle">INSTRUCTIONAL UI/UX DEVELOPMENT</div>
     </header>
 
-    <div id="home" class="introTitle">INSTRUCTIONAL UI/UX DEVELOPMENT</div>
-
-
     <div class="content-topic">
-
-
       <div class="parallax">
         <div id="group1" class="parallax__group">
           <div class="parallax__layer parallax__layer--base">
@@ -175,9 +174,9 @@
           </div>
         </div>
 
-        <!-- <div id="group7" class="parallax__group">
+        <div id="group7" class="parallax__group">
           <div class="parallax__layer parallax__layer====base"></div>
-        </div> -->
+        </div>
       </div>
     </div>
   </main>
