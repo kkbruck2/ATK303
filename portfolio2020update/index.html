@@ -30,7 +30,7 @@
     $(function() {
       $('.side-navigation a').bind('click', function(event) {
         var $anchor = $(this);
-        $('*').stop().animate({
+        $('html, body').stop().animate({
           scrollTop: $($anchor.attr('href')).offset().top - 0
         }, 1000);
         event.preventDefault();

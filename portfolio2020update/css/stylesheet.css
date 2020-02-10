@@ -317,12 +317,11 @@ header {
   width: auto;
   height: 100vh;
 
-  animation: sketch-ani 15s linear infinite;
+  animation: sketch-ani 5s linear infinite;
 }
 
 @keyframes sketch-ani {
 0%   {opacity: 0;}
-25% {opacity: .5}
 50% {opacity: 1}
 100% {opacity: 0}
 }
@@ -331,9 +330,16 @@ header {
 
 .vectorLine {
   position: absolute;
-    width: auto;
+  width: auto;
   height: 100vh;
+  width: 500px
+  animation: line-ani 5s linear;
+  transform: translateX(-500px);
+  transition: transform 0.3s ease-in-out;
+
 }
+
+
 
 .flower {
   position: absolute;
