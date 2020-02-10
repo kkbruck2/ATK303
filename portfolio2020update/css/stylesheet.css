@@ -314,8 +314,16 @@ header {
   position: absolute;
   left: 0;
   top: 0;
-    width: auto;
+  width: auto;
   height: 100vh;
+
+  animation: sketch-ani 15s linear infinite;
+}
+
+@keyframes sketch-ani {
+0%   {opacity: 0;}
+100% {opacity: 1}
+}
 
 }
 
