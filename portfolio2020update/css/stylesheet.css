@@ -15,7 +15,7 @@ html body {
   margin-left: 0px;
 }
 
-nav .side-navigation {
+/* nav .side-navigation {
   background-color: #333;
   height: 100vh;
   width: 240px;
@@ -40,7 +40,7 @@ nav .side-navigation:after {
 
 nav .side-navigation:hover {
   transform: translateX(0px);
-}
+} */
 
 nav h1 {
   font-family: 'Roboto', sans-serif;
