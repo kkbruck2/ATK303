@@ -332,10 +332,9 @@ header {
   position: absolute;
   width: auto;
   height: 100vh;
-  width: 500px
-  animation: line-ani 5s linear;
-  transform: translateX(-500px);
-  transition: transform 0.3s ease-in-out;
+  width: 600px;
+  transform: translateX(-600px);
+  transition: transform 1s ease-in-out;
 
 }
 
