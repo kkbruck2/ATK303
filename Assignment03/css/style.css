@@ -1,0 +1,40 @@
+/* CSS Reset*/
+html body {
+    /* background-image: url(../img/woodFloor.jpg);
+    background-repeat: no-repeat; */
+  margin: 0 auto;
+}
+
+/* body.wood {
+position: fixed;
+  margin: 0;
+  padding: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: -10;
+} */
+/* overall heading*/
+.title {
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin-top: 20px;
+  font-family: 'Fontdiner Swanky', sans-serif;
+  font-size: 72px;
+  font-kerning: none;
+  text-align: center;
+  width: 100%;
+}
+
+div.hunt .cat1{
+  transform: scale(.15);
+}
+
+
+div.hunt .mouse {
+  transform: scale(.3);
+  margin-top: 20px;
+  z-index: 2;
+}
