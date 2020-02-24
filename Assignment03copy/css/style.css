@@ -1,99 +1,77 @@
-/* CSS Reset*/
-/* *,
-*::before,
-*::after,
-:root {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-} */
 
 
-html
-body {
-  background-image: url(../img/woodFloor.jpg);
+
+html body{
+  position: relative;
+  background-image: url(../img/floor.jpg);
   background-repeat: no-repeat;
-  display: block;
-  min-width: 100%;
-  margin-right: 0;
+  max-width: 100%;
+}
+
+.container {
+display: flex;
+  margin-top: 0;
+  margin-right: auto;
+  margin-left: auto;
   margin-bottom: 0;
-  margin: 0 auto ;
   padding: 0;
-  height: 2000px;
-overflow-y: scroll;
-    z-index: -1;
-  /* perspective: 1px;
-  transform-style: preserve-3d; */
+  height: 100%;
+  overflow-y: scroll;
+
+  z-index: -1;
+
+
 }
 
 header {
   content: '';
   position: fixed;
-  top: 0;
   /* display: block; */
-  padding: 10px;
   z-index: 5;
 }
+.hunt {
+  text-align: center;
+  z-index: 4;
+}
 
-/* body.wood {
-position: fixed;
-  margin: 0;
-  padding: 0;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  z-index: -10;
-} */
-/* overall heading*/
 .title {
   position: fixed;
-  top: 0;
-  left: 0;
-  margin-top: 20px;
-  font-family: 'Fontdiner Swanky', sans-serif;
-  font-size: 72px;
-  font-kerning: none;
-  text-align: center;
-  width: 100%;
+  top: 10px;
+  left: 25%;
+  margin: 25px auto;
+  width: 50%;
 }
 
 .container {
   position: relative;
-  border-bottom: 0;
+  margin-top: 300px auto;
 }
 
-
-
-div .container .mouse::before {
-  content: '';
+#cat1 {
   position: relative;
-  /* top: 0; */
-  left: 50%;
-  /* right: 0; */
-  bottom: 0;
-  display: block;
-  /* background-size: cover; */
-  transform: translateZ(-.5px) scale(1);
-  z-index: 3;
+  transform: scale(.15);
+  top: -375px;
 }
 
-div.container .cat1{
+#mouse {
+  position: relative;
+  animation: mouse-ani 5s linear;
+  transform: scale(.07);
+  bottom: 1220px;
+}
+
+/* @keyframes mouse-ani {
+  0% {transform: scale(.07); bottom: 1170px;}
+  100% {transform: scale(.3); bottom: 0px;} */
+
+
+
+/* div.container .cat1{
   position: relative;
   max-width: 60%;
   margin: 150px auto;
-  transform: scale(1);
-}
+  transform: scale(.25);
+} */
 
-
-body .mouse {
-position: relative;
-bottom: 100px;
-max-width: 20%;
-margin: 50px auto;
 
 /* transform: translateZ(-.5px) scale(1); */
-
-
-  z-index: 1;
-}
