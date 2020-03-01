@@ -1,0 +1,92 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+#mainimg {
+  width: 100%;
+  margin-bottom: 1em;
+}
+
+@media all and (min-width: 30em) {
+  h1 {
+    color: blue;
+  }
+
+  nav {
+    grid-template-columns: repeat(4, 1fr)
+  }
+}
+
+@media all and (min-width: 50em) {
+  h1 {
+    color: red;
+    padding-bottom: .1em;
+  }
+
+  #mainimg {
+    width: 70%;
+    float: right;
+  }
+
+  nav {
+    width: 30%;
+    grid-template-columns: 1fr;
+  }
+
+  nav a {
+    margin-right: 1em;
+  }
+}
+
+main {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+
+@media all and (min-width: 50em){
+  h1 { color: red; padding-bottom: .1em; }
+  #mainimg { width: 70%; float: right; }
+  nav { width: 30%; grid-template-columns: 1fr; }
+  nav a { margin-right: 1em; }
+  main { clear: both; grid-template-columns: repeat(3,1fr); grid-column-gap: 2em; }
+  body { max-width: 960px; margin: 0em auto; }
+}
+
+/* -------------------------------------------nav */
+nav {
+  /* responsive------------------------------ */
+  display: grid;
+  /* grid coloumns---------------------------- */
+  grid-template-columns: 1fr 1fr;
+  /* grid rows---------------------------------- */
+  grid-template-rows: auto;
+  /* grid gaps---------------------------------- */
+  grid-column-gap: 1em;
+  grid-row-gap: 1em;
+  margin-bottom: 1em;
+  /* -------------------------- */
+  /* flexible side--------------------------- */
+  background-color: deepskyblue;
+  height: 100vh;
+  width: 200px;
+  position: fixed;
+  transform: translateX(-200px);
+  transition: transform 0.3s ease-in-out;
+}
+
+nav:after {
+  content: '';
+  background: deepskyblue;
+  height: 80px;
+  width: 80px;
+  position: absolute;
+  right: -40px;
+  top: 40px;
+  border-radius: 50%;
+}
+
+nav:hover {
+  transform: translateX(0px);
+}

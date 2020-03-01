@@ -85,3 +85,14 @@ nav a:hover {
 #slide3:hover img {
   filter: blur(10px);
 }
+
+#circleSVG {
+  opacity: 1;
+  transition: all 1s linear;
+}
+
+#circleSVG:hover {
+  fill: red;
+  opacity: .5;
+  transform: scale(5);
+}
