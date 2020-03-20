@@ -21,6 +21,19 @@ font-family: 'Roboto Condensed', ; */
   margin-bottom: 1em;
 }
 
+main {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 1em;
+  grid-row-gap: 1em;
+  margin-bottom: 1em;
+}
+
 .sidebar {
   position: fixed;
   top: 0;
@@ -35,13 +48,6 @@ h1.title {
   text-align: center;
 }
 
-/* nav {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-column-gap: 1em;
-  grid-row-gap: 1em;
-  margin-bottom: 1em;
-} */
 body {
   font-family: Arial, Helvetica, sans-serif;
   margin: 0;
@@ -58,18 +64,6 @@ h1 {
   border-bottom: 2px solid #ccc;
 }
 
-/* nav a {
-  color: #900;
-  font-family: Graduate, Georgia, "Times New Roman", Times, serif;
-  font-weight: bold;
-  text-decoration: none;
-  font-style: italic;
-  text-transform: uppercase;
-  border: 1px solid #999;
-  background-color: #eee;
-  border-radius: .5em;
-  padding: 1em;
-} */
 h2 {
   font-family: Graduate, Georgia, "Times New Roman", Times, serif;
   color: green;
@@ -96,59 +90,50 @@ main {
 /*  Media Queries (responsive to screen width) */
 @media all and (min-width: 30em) {
   h1 {
-    color: blue;
+    color: red;
+    padding-bottom: .1em;
   }
 
   nav {
-    background-color: #333;
-    height: 100vh;
-    width: 200px;
-    position: fixed;
-    transform: translateX(-200px);
-    transition: transform 0.3s ease-in-out;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr)
+  }
 }
 
- #mobileMenu {
-    position: absolute;
-    top: 15px;
-    left: 5px;
-    max-width: 25px;
-  }
 
-  nav:after {
-    content: '';
-    height: 40px;
-    width: 50px;
-    position: absolute;
-    right: -50px;
-    top: 0px;
-  }
 
-  nav:hover {
-    transform: translateX(0px);
-  }
 
-  /* nav {
+/* nav {
     grid-template-columns: repeat(4, 1fr)
   } */
 }
 
 @media all and (min-width: 50em) {
   h1 {
+    color: red;
     padding-bottom: .1em;
   }
+
+  main {
+    clear: both;
+    grid-template-columns: repeat(3, 1fr);
+    grid-column-gap: 2em;
+  }
+
 
   #mainimg {
     width: 70%;
     float: right;
   }
-.sidebar {
-  position: fixed;
-  top: 0;
-  left: 0px;
-  background: #333333;
-  width: 100%;
-}
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0px;
+    background: #333333;
+    width: 100%;
+  }
+
   nav {
     width: 30%;
     grid-template-columns: 1fr;
@@ -158,11 +143,11 @@ main {
     margin-right: 1em;
   }
 
-  main {
-    clear: both;
-    grid-template-columns: repeat(3, 1fr);
-    grid-column-gap: 2em;
-  }
+   main {
+     clear: both;
+     grid-template-columns: repeat(3,1fr);
+     grid-column-gap: 2em;
+   }
 
   body {
     max-width: 960px;
