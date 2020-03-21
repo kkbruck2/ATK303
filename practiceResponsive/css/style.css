@@ -24,10 +24,6 @@ nav {
   margin-bottom: 1em;
 }
 
-main {
-  display: grid;
-  grid-template-columns: 1fr;
-}
 
 nav a {
   color: #900;
@@ -65,7 +61,12 @@ footer {
   margin-bottom: 1em;
 }
 
-/*  Media Queries (responsive to screen width) */
+main {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+/*........................Media Queries (responsive to screen width) */
 @media all and (min-width: 30em) {
   h1 {
     color: blue;
@@ -98,8 +99,32 @@ footer {
 
   main {
     clear: both;
+    width: 100%;
     grid-template-columns: repeat(3, 1fr);
     grid-column-gap: 2em;
   }
-	body { max-width: 960px; margin: 0em auto; }
+
+  h1 {
+    color: red;
+    padding-bottom: .1em;
+  }
+
+  #mainimg {
+    width: 70%;
+    float: right;
+  }
+
+  nav {
+    width: 30%;
+    grid-template-columns: 1fr;
+  }
+
+  nav a {
+    margin-right: 1em;
+  }
+
+  body {
+    max-width: 960px;
+    margin: 0em auto;
+  }
 }
