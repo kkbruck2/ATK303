@@ -1,0 +1,130 @@
+/* Default Layout (Mobile) */
+body {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 1em;
+}
+
+h1 {
+  font-family: Graduate, Georgia, "Times New Roman", Times, serif;
+  text-transform: uppercase;
+  color: green;
+  text-shadow: black 1px 1px 1px;
+  font-size: 3em;
+  margin: 0 0 .25em 0;
+  padding: 0;
+  border-bottom: 1px solid #ccc;
+}
+
+nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 1em;
+  grid-row-gap: 1em;
+  margin-bottom: 1em;
+}
+
+
+nav a {
+  color: #900;
+  font-family: Graduate, Georgia, "Times New Roman", Times, serif;
+  font-weight: bold;
+  text-decoration: none;
+  font-style: italic;
+  text-transform: uppercase;
+  border: 1px solid #999;
+  background-color: #eee;
+  border-radius: .5em;
+  padding: 1em;
+}
+
+h2 {
+  font-family: Graduate, Georgia, "Times New Roman", Times, serif;
+  color: green;
+  text-shadow: black 1px 1px 1px;
+  font-weight: normal;
+  margin: 0;
+  padding: .25em 0 .25em 0;
+  border-bottom: 1px solid #ccc;
+}
+
+footer {
+  font-family: Graduate, Georgia, "Times New Roman", Times, serif;
+  background-color: green;
+  color: white;
+  padding: .5em;
+  text-align: center;
+}
+
+#mainimg {
+  width: 100%;
+  margin-bottom: 1em;
+}
+
+main {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+/*........................Media Queries (responsive to screen width) */
+@media all and (min-width: 30em) {
+  h1 {
+    color: blue;
+  }
+
+  nav {
+    grid-template-columns: repeat(4, 1fr)
+  }
+}
+
+@media all and (min-width: 50em) {
+  h1 {
+    color: red;
+    padding-bottom: .1em;
+  }
+
+  #mainimg {
+    width: 70%;
+    float: right;
+  }
+
+  nav {
+    width: 30%;
+    grid-template-columns: 1fr;
+  }
+
+  nav a {
+    margin-right: 1em;
+  }
+
+  main {
+    clear: both;
+    width: 100%;
+    grid-template-columns: repeat(3, 1fr);
+    grid-column-gap: 2em;
+  }
+
+  h1 {
+    color: red;
+    padding-bottom: .1em;
+  }
+
+  #mainimg {
+    width: 70%;
+    float: right;
+  }
+
+  nav {
+    width: 30%;
+    grid-template-columns: 1fr;
+  }
+
+  nav a {
+    margin-right: 1em;
+  }
+
+  body {
+    max-width: 960px;
+    margin: 0em auto;
+  }
+}
