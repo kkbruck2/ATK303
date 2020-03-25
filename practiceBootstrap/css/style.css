@@ -1,0 +1,20 @@
+li {
+  padding-left: 12px;
+}
+.row {
+  background-color: #ddd;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #333;
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.col {
+  margin: 6px;
+  background-color: #ddd;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #333;
+
+}

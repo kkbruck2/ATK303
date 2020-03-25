@@ -66,6 +66,7 @@ main {
   grid-template-columns: 1fr;
 }
 
+
 /*........................Media Queries (responsive to screen width) */
 @media all and (min-width: 30em) {
   h1 {
