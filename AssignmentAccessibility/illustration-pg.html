@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html>
+<!--<![endif]-->
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Kim Brucker's Portfolio 2020</title>
+  <!-- javascript=============================================== -->
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+  <!-- javascript============================fadeToggle=================== -->
+  <script>
+    $(document).ready(function() {
+      $("#mybutton").click(function() {
+        $(".peekaboo").fadeToggle();
+      });
+    });
+  </script>
+
+  <!-- javascript===============================scroll================ -->
+
+  <script type="text/javascript">
+    $(function() {
+      $('.side-navigation a').bind('click', function(event) {
+        var $anchor = $(this);
+        $('*').stop().animate({
+          scrollTop: $($anchor.attr('href')).offset().top - 0
+        }, 1000);
+        event.preventDefault();
+      });
+    });
+  </script>
+
+  <!-- styles=================================================== -->
+
+  <style type="text/css"></style>
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <link rel="author" href="https://plus.google.com/u/0/109859280204979591787/about" />
+
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Fontdiner+Swanky&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/stylesheet.css">
+
+</head>
+
+
+<body class='site'>
+  <div class="sidebar-area">
+    <nav class='side-navigation'>
+      <img class="icon" src="img/SVG/kbicon.svg" alt="Kim Brucker Icon">
+      <h1>KIM BRUCKER</h1>
+      <ul class="menu">
+        <li class="menu-item"><a href="#home">Home</a></li>
+        <li class='menu-item'><a href="#home">App Development</a></li>
+        <li class='menu-item'><a href="#group2">Illustration</a></li>
+        <li class='menu-item'><a href="#group5">Animation</a></li>
+        <li class='menu-item'><a href="#group6">Game Development</a></li>
+        <li class='menu-item'><a href="#group7">Arts</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <main id="home">
+
+
+    <header>
+      <div class="top-nav">
+        <ul class="pages">
+          <li class="pages-item"><a href="#">Illustration</a></li>
+          <li class="pages-item"><a href="index.html">Home</a></li>
+        </ul>
+      </div>
+      <div class="introTitle">INSTRUCTIONAL UI/UX DEVELOPMENT</div>
+    </header>
+
+    <div class="content-topic">
+
+    </div>
+  </main>
+</body>
+
+</html>
