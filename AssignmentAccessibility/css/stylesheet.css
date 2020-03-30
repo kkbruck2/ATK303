@@ -74,7 +74,7 @@ header {
 }
 h1 {
   font-family: 'Roboto Condensed', sans-serif;
-  color: #eeeeee;
+  color: #ffffff;
   font-size: 1.5em;
   right: 0;
 
@@ -192,7 +192,7 @@ h1 {
 h2 {
   font-size: 1.2em;
   font-family: 'Roboto Condensed', sans-serif;
-  color: #eeeeee;
+  color: #ffffff;
   text-align: center;
 }
 
@@ -405,7 +405,6 @@ width: auto;
   border-style: solid none solid solid;
   border-color: #333333;
   border-width: 3px;
-  color: #dddddd;
   top: 50%;
   right: 0;
   padding: 10px 50px;
@@ -415,21 +414,17 @@ width: auto;
 
 .purposeText {
   position: absolute;
-  top: 20px;
+  top: 40px;
   left: 20px;
-  font-size: .8em;
   font-family: 'Roboto', sans-serif;
-  color: #dddddd;
-  width: 40%;
-
-  line-height: 1.5;
+  color: #ffffff;
+  width: 45%;
+  line-height: 1.4;
   padding: 10px 20px;
-  background-color: #666666;
   background-color: #33333399;
   border-style: solid;
   border-color: #333333;
   border-width: 3px;
-  color: #dddddd;
   float: right;
 }
 
