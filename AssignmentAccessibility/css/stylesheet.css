@@ -83,9 +83,9 @@ h1 {
 .introTitle {
   position: relative;
   bottom: 0;
-  background-color: #33333399;
+  background-color: #11111199;
   border-style: solid none solid none;
-  border-color: #333333;
+  border-color: #111111;
   border-width: 3px;
   font-size: 1em;
   right: 0;
@@ -401,9 +401,9 @@ width: auto;
 .title {
   font-family: 'Roboto Condensed', sans-serif;
   position: relative;
-  background-color: #22222299;
+  background-color: #11111199;
   border-style: solid none solid solid;
-  border-color: #222222;
+  border-color: #111111;
   border-width: 3px;
   top: 50%;
   right: 0;
@@ -422,9 +422,9 @@ width: auto;
   width: 45%;
   line-height: 1.5;
   padding: 10px 20px;
-  background-color: #22222299;
+  background-color: #11111199;
   border-style: solid;
-  border-color: #222222;
+  border-color: #111111;
   border-width: 1px;
   float: right;
 }
