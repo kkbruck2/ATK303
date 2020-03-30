@@ -401,9 +401,9 @@ width: auto;
 .title {
   font-family: 'Roboto Condensed', sans-serif;
   position: relative;
-  background-color: #33333399;
+  background-color: #22222299;
   border-style: solid none solid solid;
-  border-color: #333333;
+  border-color: #222222;
   border-width: 3px;
   top: 50%;
   right: 0;
@@ -422,9 +422,9 @@ width: auto;
   width: 45%;
   line-height: 1.5;
   padding: 10px 20px;
-  background-color: #33333399;
+  background-color: #22222299;
   border-style: solid;
-  border-color: #333333;
+  border-color: #222222;
   border-width: 1px;
   float: right;
 }
