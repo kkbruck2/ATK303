@@ -68,7 +68,7 @@ header {
 .top-nav{
   position: relative;
   height: 50px;
-  left: 20%;
+  padding-left: 30px;
   width: 80%;
   top: 0;
 }
@@ -79,6 +79,15 @@ h1 {
   color: #ffffff;
   font-size: 1.5em;
   right: 0;
+
+}
+nav h2 {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-weight: normal;
+  font-kerning: auto;
+  color: #ffffff;
+  font-size: 1.5em;
+  text-align: left;
 
 }
 
