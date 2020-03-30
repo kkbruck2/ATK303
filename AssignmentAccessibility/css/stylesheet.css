@@ -417,14 +417,15 @@ width: auto;
   top: 40px;
   left: 20px;
   font-family: 'Roboto', sans-serif;
+  font-size: 1em;
   color: #ffffff;
   width: 45%;
-  line-height: 1.4;
+  line-height: 1.5;
   padding: 10px 20px;
   background-color: #33333399;
   border-style: solid;
   border-color: #333333;
-  border-width: 3px;
+  border-width: 1px;
   float: right;
 }
 
