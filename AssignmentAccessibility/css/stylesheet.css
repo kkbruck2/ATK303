@@ -42,10 +42,7 @@ nav .side-navigation:hover {
   transform: translateX(0px);
 } */
 
-nav h1 {
-  font-family: 'Roboto', sans-serif;
-  color: #eeeeee;
-  font-size: 1.2em;
+.name {
   kerning: auto;
   padding-left: 30px;
   padding-bottom: 15px;
@@ -66,9 +63,7 @@ header {
   background-color: #fff;
   z-index: 4;
 }
-.wrapper {
-  position: relative;
-}
+
 
 .top-nav{
   position: relative;
@@ -77,18 +72,22 @@ header {
   width: 80%;
   top: 0;
 }
+h1 {
+  font-family: 'Roboto Condensed', sans-serif;
+  color: #eeeeee;
+  font-size: 1.5em;
+  right: 0;
 
+}
 
 .introTitle {
   position: relative;
   bottom: 0;
-  font-family: 'Roboto Condensed', sans-serif;
   background-color: #33333399;
   border-style: solid none solid none;
   border-color: #333333;
   border-width: 3px;
-  color: #eeeeee;
-  font-size: 1.2em;
+  font-size: 1em;
   right: 0;
   padding: 10px 50px;
   text-align: right;
@@ -179,7 +178,7 @@ header {
 /* -----------------------------------------main information */
 
 .content-topic {
-  position: inherit;
+  position: relative;
   top: 100px;
   margin-left: 20%;
   margin-bottom: 0;
@@ -190,13 +189,13 @@ header {
   height: 100vh;
 }
 
-
-.section-title {
+h2 {
   font-size: 1.2em;
-  font-family: 'Roboto', sans-serif;
-  color: rgba(0, 0, 0, 0.25);
+  font-family: 'Roboto Condensed', sans-serif;
+  color: #eeeeee;
   text-align: center;
 }
+
 
 
 
@@ -221,7 +220,7 @@ header {
   transition: width .3s ease-in;
   background-color: #639341;
 } */
-.ddtitle {
+h3.ddtitle {
   font-family: 'Roboto Slab', serif;
 }
 
@@ -231,7 +230,6 @@ header {
   --------------------------------------------- */
 .parallax {
   position: inherit;
-  top: 100px
   height: 500px;
   /* fallback for older browsers */
   height: 100vh;
@@ -408,51 +406,11 @@ width: auto;
   border-color: #333333;
   border-width: 3px;
   color: #dddddd;
-  font-size: 1.2em;
-  font-stretch: ultra-expanded;
   top: 50%;
   right: 0;
   padding: 10px 50px;
   text-align: right;
   margin-left: 65%;
-}
-
-
-
-.titleO {
-  font-family: 'Roboto Condensed', sans-serif;
-  position: absolute;
-  background-color: #33333399;
-  border-style: solid solid solid none;
-  border-color: #333333;
-  border-width: 3px;
-  color: #eeeeee;
-  font-size: .8em;
-  font-weight: bold;
-  padding: 10px 120px;
-  text-align: left;
-  left: 15%;
-  bottom: -35px;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-}
-
-.title1 {
-  font-family: 'Roboto Condensed', sans-serif;
-  position: absolute;
-  background-color: #33333399;
-  border-style: none solid solid none;
-  border-color: #333333;
-  border-width: 3px;
-  color: #dddddd;
-  font-size: 1em;
-  font-weight: bold;
-  padding: 10px 120px;
-  text-align: left;
-  left: 10%;
-  top: 34px;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
 }
 
 .purposeText {
