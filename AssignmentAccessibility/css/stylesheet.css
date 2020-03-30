@@ -425,11 +425,10 @@ width: auto;
   width: 45%;
   line-height: 1.5;
   padding: 10px 20px;
-  background-color: #111111cc;
+  background-color: #33333355;
   border-style: solid;
   border-color: #333333;
   border-width: 3px;
-  float: right;
 }
 
 #UIdilemma {
