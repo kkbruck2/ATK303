@@ -1,0 +1,132 @@
+/*...Default layout (mobile)......................................... */
+body {
+  padding: 0;
+  margin: 0;
+  font-family: sans-serif;
+}
+
+/* ...layout.................... */
+main {
+  display: grid;
+  grid-column: 1fr;
+}
+
+header {
+  border-bottom: 3px solid #333;
+  grid-column: 1fr;
+  padding-top: 15px;
+  padding-bottom: 15px;
+
+}
+/* nav {
+  display: grid;
+} */
+
+.side-navigation {
+  /* font-style: bold;
+  font-size: 1.2em;
+  padding-top: 10px;
+  padding-bottom: 10px; */
+  width: 200px;
+  transform: translateX(-200px);
+  transition: transform 0.3s ease-in-out;
+  z-index: 1;
+}
+
+.side-navigation .menu-mobile {
+  margin-top: 0px;
+  margin-left: 0px;
+  margin-bottom: 0px;
+  list-style: none;
+}
+
+.menu-item li:before {
+  content: '';
+  width: 250px;
+  position: fixed;
+  transform: translateX(-200px);
+  transition: transform 0.3s ease-in-out;
+}
+
+.menu-item a {
+  color: #fff;
+  font-size: 1em;
+  font-family: sans-serif;
+  font-weight: normal;
+  text-decoration: none;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 10px;
+  padding-left: auto;
+}
+
+/* nav {
+  font-size: 1.2em;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  top: 60px;
+  width: 200px;
+  position: fixed;
+  transform: translateX(-200px);
+  transition: transform 0.3s ease-in-out;
+  z-index: 1;
+} */
+
+/* nav li:after {
+  content: '';
+  position: absolute;
+  background-color: deepskyblue;
+  padding-right: 15px;
+  text-align: right;
+} */
+
+.menu-item:after {
+  content: '';
+  background: #333;
+  height: 50px;
+  width: 250px;
+  position: absolute;
+  right: -50px;
+  top: 0px;
+}
+
+nav:hover {
+  transform: translateX(0px);
+}
+
+.site {
+}
+
+.sidebar-area {
+}
+
+.side-navigation {}
+
+.menu-mobile {}
+
+.menu-item {}
+
+/* ...headings.................. */
+h1 {
+  text-align: center;
+  margin: 0px;
+
+}
+
+/*................Media mobile Queries (responsive to screen width) */
+@media all and (min-width: 30em) {
+
+  /*...Navigation....................................*/
+  .sidebar-area {}
+}
+
+/* media tablet....................... */
+@media all and (min-width: 50em) {
+  /* .sidebar-area {
+    position: relative;
+    background: #333;
+    width: 20%;
+    float: left;
+    height: 100vh;
+  } */
+}

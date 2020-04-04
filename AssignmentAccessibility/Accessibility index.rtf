@@ -1,0 +1,202 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2512
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 <!DOCTYPE html>\
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->\
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->\
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->\
+<!--[if gt IE 8]><!-->\
+<html lang="en">\
+<!--<![endif]-->\
+\
+<head>\
+  <meta charset="utf-8">\
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">\
+  <meta name="description" content="">\
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />\
+  <title>Kim Brucker's Portfolio 2020</title>\
+  <!-- javascript=============================================== -->\
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>\
+\
+  <!-- javascript============================fadeToggle=================== -->\
+  <script>\
+    $(document).ready(function() \{\
+      $("#mybutton").click(function() \{\
+        $(".peekaboo").fadeToggle();\
+      \});\
+    \});\
+  </script>\
+\
+  <!-- javascript===============================scroll================ -->\
+\
+  <script>\
+    $(function() \{\
+      $('.side-navigation a').bind('click', function(event) \{\
+        var $anchor = $(this);\
+        $('html, body').stop().animate(\{\
+          scrollTop: $($anchor.attr('href')).offset().top - 0\
+        \}, 1000);\
+        event.preventDefault();\
+      \});\
+    \});\
+  </script>\
+\
+  <!-- styles=================================================== -->\
+\
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->\
+  <link rel="author" href="https://plus.google.com/u/0/109859280204979591787/about" />\
+\
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap" rel="stylesheet">\
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap" rel="stylesheet">\
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap" rel="stylesheet">\
+  <link href="https://fonts.googleapis.com/css?family=Fontdiner+Swanky&display=swap" rel="stylesheet">\
+  <link rel="stylesheet" href="css/stylesheet.css">\
+\
+</head>\
+\
+<body class='site'>\
+  <div class="sidebar-area">\
+    <nav class='side-navigation'>\
+      <img class="icon" src="img/SVG/kbicon.svg" alt="Kim Brucker Icon">\
+      <h2 class="name">KIM BRUCKER</h2>\
+      <ul class="menu">\
+        <li class="menu-item"><a href="#home">Home</a></li>\
+        <li class='menu-item'><a href="#home">App Development</a></li>\
+        <li class='menu-item'><a href="#group2">Illustration</a></li>\
+        <li class='menu-item'><a href="#group5">Animation</a></li>\
+        <li class='menu-item'><a href="#group6">Game Development</a></li>\
+        <li class='menu-item'><a href="#group7">Arts</a></li>\
+      </ul>\
+    </nav>\
+  </div>\
+\
+  <main id="home">\
+\
+\
+    <header>\
+      <div class="top-nav">\
+        <ul class="pages">\
+          <li class="pages-item"><a href="illustration-pg.html">Illustration</a></li>\
+          <li class="pages-item"><a href="#">Home</a></li>\
+        </ul>\
+      </div>\
+      <div class="introTitle">\
+        <h1>INSTRUCTIONAL UI/UX DEVELOPMENT</h1>\
+        </div>\
+    </header>\
+\
+    <div class="content-topic">\
+      <div class="parallax">\
+        <div id="group1" class="parallax__group">\
+          <div class="parallax__layer parallax__layer--base">\
+\
+            <img class="ddlogo" src="img/SVG/cropped.svg" alt="Driving Dilemmas Logo">\
+            <img class="appPages" src="img/1x/DDsample.png" alt="Sample pages of Driving Dilemmas App">\
+\
+            <div class="title"> <h2>APP DEVELOPMENT</h2></div>\
+            <div class="purposeText">\
+              <h3 class="ddtitle">PURPOSE</h3>\
+              <p>Driving Dilemmas is an app concept that is intended to improve the decision-making process for unique driving situations that cannot be simulated in normal driving classes and is affordable in comparison to professional simulators.It\
+                is not intended to replace driving practice or simulators.Samples of situations would be flooding, icy conditions, tire blowout, accident avoidance, etc. Driving dilemmas can also be used to prepare learners for new driving situations\
+                prior to practical application such as multi-lane traffic,high-traffic areas, or complex navigation. Existing driver education apps are quizzes for written exams, or driving games focusing on speed and agility. Driving Dilemmas will\
+                provide 3D visual simulations of events that would be unsafe to practice in moving vehicles. Learners will be required to make the appropriate and timely decision for handling the simulated situation in order to succeed.\
+              </p>\
+\
+            </div>\
+\
+\
+            <!-- <div id="UIdilemma">\
+              <img class="UIdrive" src="img/1x/Drivemdpi.png" alt="User interface for Driving Dilemmas\'96Drive">\
+              <img class="UIreverse" src="img/1x/Reversemdpi.png" alt="User interface for Driving Dilemmas\'96Reverse">\
+            </div> -->\
+          </div>\
+\
+        </div>\
+\
+\
+\
+        <div id="group2" class="parallax__group">\
+          <div class="parallax__layer parallax__layer--base">\
+            <img class="over1" src="img/illustrationSketch.png" alt="Develoment sketch">\
+            <img class="vectorLine" src="img/illusline.png" alt="Vector line art">\
+\
+\
+            <div class="title">\
+              <h2>ILLUSTRATION</h2>\
+            </div>\
+\
+          </div>\
+          <div class="parallax__layer parallax__layer--back">\
+            <img class="flower" src="img/illustrationMixed.jpg" alt="Ilustration using both Photoshop and Illustrator">\
+\
+          </div>\
+        </div>\
+\
+        <div id="group3" class="parallax__group">\
+          <div class="parallax__layer parallax__layer--fore">\
+\
+\
+          </div>\
+          <div class="parallax__layer parallax__layer--base">\
+\
+          </div>\
+        </div>\
+        <div id="group4" class="parallax__group">\
+          <div class="parallax__layer parallax__layer--base">\
+            <img class="processes" src="img/SVG/process.svg" alt="Replication process opening page.">\
+\
+            <div class="title">\
+              <h2>ANIMATION</h2>\
+            </div>\
+\
+          </div>\
+          <div class="parallax__layer parallax__layer--back">\
+            <img class="animationCell" src="img/SVG/farCell.svg" alt="Cell exterior">\
+\
+          </div>\
+          <div class="parallax__layer parallax__layer--deep">\
+            <img class="animationBkg" src="img/cellBkg.png" alt="Cell background">\
+\
+          </div>\
+        </div>\
+        <div id="group5" class="parallax__group">\
+          <div class="parallax__layer parallax__layer--fore">\
+            <div class="title">\
+              <h2>GAME DEVELOPMENT</h2>\
+              </div>\
+            <img src="img/SVG/gamingSize.svg" alt="Game development">\
+          </div>\
+          <div class="parallax__layer parallax__layer--base">\
+            <img class="wood" src="img/woodBkg.jpg" alt="Wood floor">\
+\
+          </div>\
+        </div>\
+        <div id="group6" class="parallax__group">\
+          <!-- <div class="backCrop">\
+\
+\
+          </div> -->\
+          <div class="parallax__layer parallax__layer--base">\
+            <img class="arts" src="img/ArtsBkg.png" alt="Fine Art projects">\
+            <div class="title">\
+              <h2>ARTS</h2>\
+              </div>\
+\
+          </div>\
+        </div>\
+\
+        <div id="group7" class="parallax__group">\
+          <div class="parallax__layer parallax__layer====base"></div>\
+        </div>\
+      </div>\
+    </div>\
+\
+  </main>\
+</body>\
+\
+</html>\
+}
