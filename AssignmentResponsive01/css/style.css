@@ -5,35 +5,125 @@ body {
   font-family: sans-serif;
 }
 
+h1 {
+  text-align: center;
+  margin: 0px;
+  font-size: 1.5em;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+ul {}
+
 /* ...layout.................... */
-main {
+.site {
   display: grid;
   grid-column: 1fr;
 }
 
-header {
-  border-bottom: 3px solid #333;
-  grid-column: 1fr;
+ul {
+  list-style: none;
   padding-top: 15px;
-  padding-bottom: 15px;
+}
+nav a {
+  display: grid;
+  font-size: 1em;
+  position: absolute;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 10px;
+  text-align: right;
 
 }
+
+
+nav{
+  height: 100vh;
+  width: 200px;
+  position: fixed;
+  transform: translateX(-200px);
+  transition: transform 0.3s ease-in-out;
+}
+
+nav li:after {
+  content: '';
+  background-color: deepskyblue;
+  height: 50px;
+  width: 250px;
+  position: absolute;
+  right: -50px;
+
+}
+
+
+nav:hover {
+  transform: translateX(0px);
+}
+
+.site-header {
+  position: relative;
+  padding: 10px auto;
+  border-bottom: 3px solid #333;
+  width: 100%;
+}
+
+/* nav.side-navigation .menu-item {
+  content: '';
+  position: absolute;
+  width: 250px;
+  transform: translateX(-200px);
+  transition: transform 0.3s ease-in-out;
+}
+
+.side-navigation .menu-item:hover {
+  transform: translateX(0px);
+  transition: transform 0.3s ease-in-out;
+} */
+
+
+
+/* .side-navigation .menu-item nav:after {
+  color: deepskyblue;
+  font-family: sans-serif;
+  font-size: 1em;
+  font-weight: normal;
+  text-decoration: none;
+  position: relative;
+  display: block;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 10px;
+  padding-left: auto;
+} */
+
+
+/* font-size: 1em;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 10px; */
+/* width: 50px; */
+/* transform: translateX(-200px); */
 /* nav {
   display: grid;
 } */
-
-.side-navigation {
-  /* font-style: bold;
+/* .side-navigation {
+  display: grid;
+  background-color: #333;
+  height: inherit; */
+/* font-style: bold;
   font-size: 1.2em;
   padding-top: 10px;
   padding-bottom: 10px; */
+/* position: absolute;
+  content: '';
   width: 200px;
   transform: translateX(-200px);
   transition: transform 0.3s ease-in-out;
-  z-index: 1;
+  z-index: 1; */
 }
 
-.side-navigation .menu-mobile {
+/*
+.side-navigation .menu {
   margin-top: 0px;
   margin-left: 0px;
   margin-bottom: 0px;
@@ -42,7 +132,7 @@ header {
 
 .menu-item li:before {
   content: '';
-  width: 250px;
+  width: 200px;
   position: fixed;
   transform: translateX(-200px);
   transition: transform 0.3s ease-in-out;
@@ -58,8 +148,7 @@ header {
   padding-bottom: 10px;
   padding-right: 10px;
   padding-left: auto;
-}
-
+} */
 /* nav {
   font-size: 1.2em;
   padding-top: 10px;
@@ -71,7 +160,6 @@ header {
   transition: transform 0.3s ease-in-out;
   z-index: 1;
 } */
-
 /* nav li:after {
   content: '';
   position: absolute;
@@ -79,8 +167,7 @@ header {
   padding-right: 15px;
   text-align: right;
 } */
-
-.menu-item:after {
+/* .menu-item:after {
   content: '';
   background: #333;
   height: 50px;
@@ -88,45 +175,88 @@ header {
   position: absolute;
   right: -50px;
   top: 0px;
-}
-
-nav:hover {
+} */
+/* nav:hover {
   transform: translateX(0px);
-}
+} */
+/* .site {}
 
-.site {
-}
-
-.sidebar-area {
-}
+.sidebar-area {}
 
 .side-navigation {}
 
 .menu-mobile {}
 
-.menu-item {}
-
+.menu-item {} */
 /* ...headings.................. */
-h1 {
-  text-align: center;
-  margin: 0px;
-
-}
-
+/* ...............end of mobile........ */
 /*................Media mobile Queries (responsive to screen width) */
-@media all and (min-width: 30em) {
+/* @media all and (min-width: 30em) { */
+/*...Navigation....................................*/
+/* main {
+    display: grid;
+    grid-template-columns: 2fr;
+  }
 
-  /*...Navigation....................................*/
-  .sidebar-area {}
-}
-
-/* media tablet....................... */
-@media all and (min-width: 50em) {
-  /* .sidebar-area {
+  .sidebar-area {
+    display: grid;
+    grid-column: flex;
     position: relative;
-    background: #333;
     width: 20%;
     float: left;
     height: 100vh;
-  } */
-}
+  }
+} */
+/* media tablet....................... */
+/* @media all and (min-width: 50em) {
+  main {
+    display: grid;
+    grid-template-columns: 2fr;
+  }
+
+  div.sidebar-area {
+    display: grid;
+    grid position: absolute;
+    grid-auto-columns:
+      float: left;
+    height: 100vh;
+  }
+
+  nav .side-navigation .menu {
+    margin-top: 0px;
+    margin-left: 0px;
+    margin-bottom: 0px;
+    list-style: none;
+  }
+
+  .side-navigation .menu-item {
+    position: relative;
+  }
+
+  .side-navigation .menu-item:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    background-color: #639341;
+    transition: width .3s ease-in;
+  }
+
+  .side-navigation .menu-item:hover {
+    width: 100%;
+  }
+
+  .side-navigation .menu-item a {
+    color: #fff;
+    font-family: sans-serif;
+    font-size: 1em;
+    font-kerning: auto;
+    font-weight: normal;
+    text-decoration: none;
+    position: relative;
+    display: block;
+    padding: 15px auto 15px 30px;
+  }
+} */
