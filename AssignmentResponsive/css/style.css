@@ -10,24 +10,44 @@
 .upholstery-3-hex { color: #9B3220; }
 .upholstery-4-hex { color: #46848F; }
 .upholstery-5-hex { color: #441D47; } */
-
-
 /* Default Layout (Mobile) */
 body {
-  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-family: 'Roboto Condensed', sans-serif;
   margin: 0;
-  padding: 1em;
+  background-color: #B1997D;
+
+
 }
 
-h1 {
-  font-family: Graduate, Georgia, "Times New Roman", Times, serif;
-  text-transform: uppercase;
-  color: green;
-  text-shadow: black 1px 1px 1px;
-  font-size: 3em;
-  margin: 0 0 .25em 0;
-  padding: 0;
-  border-bottom: 1px solid #ccc;
+header {
+background: url("img/mesh.png") center no-repeat;
+
+}
+
+.BUlogo {
+  width: 50%;
+  margin-top: 20px;
+  margin-left: 25%;
+  margin-right: 25%;
+  margin-bottom: 0px;
+}
+
+header h1 {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-weight: normal;
+  font-kerning: auto;
+  color: #000;
+  font-size: 2em;
+  text-align: center;
+}
+
+h2 {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-weight: normal;
+  font-kerning: auto;
+  color: #000;
+  font-size: 1.5em;
+  text-align: left;
 }
 
 nav {
@@ -37,7 +57,6 @@ nav {
   grid-row-gap: 1em;
   margin-bottom: 1em;
 }
-
 
 nav a {
   color: #900;
@@ -79,7 +98,6 @@ main {
   display: grid;
   grid-template-columns: 1fr;
 }
-
 
 /*........................Media Queries (responsive to screen width) */
 @media all and (min-width: 30em) {
