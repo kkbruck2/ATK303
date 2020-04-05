@@ -19,8 +19,19 @@ body {
 
 }
 
-header {
-background: url("img/mesh.png") center no-repeat;
+.bkg header {
+  position: absolute;
+  top: -10%;
+  left: -10%;
+background-image: #B1997D url("img/mesh.png") no-repeat -25% -25%;
+
+overflow: hidden;
+}
+
+.laceBorder{
+  position: absolute;
+  background-image: url("img/lace-pattern.png") repeat-x left ;
+
 
 }
 
