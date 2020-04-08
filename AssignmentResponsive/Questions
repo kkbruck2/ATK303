@@ -7,3 +7,6 @@ Can you have a header with a responsive height and have content
 flow in the correct order?
 
 How do you center content in the parent container?
+
+How would I scroll the page so that when the nav bar hits the top it stops, but
+the page continues to scroll?
