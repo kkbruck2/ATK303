@@ -47,6 +47,7 @@ h2 {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto auto auto auto auto auto auto;
+margin: 0;
 }
 
 #bkg {
@@ -100,24 +101,26 @@ header {
 
 .menu {
   display: grid;
-  width: 100%;
+  grid-template-columns: repeat(3, 1fr);
   position: relative;
   top: 13em;
-  grid-row: 3 / 5;
+      width: 100%;
+  grid-row: 3 / 4;
   z-index: 1;
 }
 
 nav {
   display: grid;
   position: relative;
-  grid-template-columns: repeat(3, 1fr);
   grid-column-gap: 2em;
   display: inline-grid;
   border-top: 3px solid #E6DFD6;
   border-bottom: 3px solid #E6DFD6;
   background-color: #E6DFD666;
-  padding-left: 5%;
-  padding-right: 50%;
+  padding-left: 10%;
+  padding-right: 10%;
+
+  margin: auto;
   grid-row: 3 / 4;
 }
 
@@ -134,21 +137,23 @@ nav a {
   text-align: center;
   margin-left: auto;
   margin-right: auto;
+  grid-row: 3 / 4;
 }
 
 #content {
   display: grid;
   grid-template-columns: 1fr;
   position: relative;
+  top: 16em;
   grid-row: 3 / 8;
-  z-index: 3;
+  z-index: 1;
 }
 
-.trim {
+main .trim {
   height: 8em;
   position: relative;
   display: grid;
-  background-position: top left;
+  background-position: left top;
   background-image: url(../img/SVG/laceTrim.svg);
   background-repeat: repeat-x;
   grid-row: 4 / 5;
@@ -177,12 +182,14 @@ footer {
 
 /*........................Media Queries (responsive to screen width) */
 @media all and (min-width: 30em) {
-  #container {
+.container {
     display: grid;
     grid-template-columns: 2fr;
     grid-template-rows: auto auto auto auto auto auto;
     height: 100vh;
   }
+
+
 }
 
 @media all and (min-width: 50em) {
@@ -197,8 +204,8 @@ footer {
   }
 
   nav {
-    width: 30%;
-    grid-template-columns: 1fr;
+    width: 100%;
+    grid-template-columns: 2fr;
   }
 
   nav a {
