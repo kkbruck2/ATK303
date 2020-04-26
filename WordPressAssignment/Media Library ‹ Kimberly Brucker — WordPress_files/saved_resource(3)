@@ -1,0 +1,1618 @@
+/*
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
+
+var media = wp.media;
+
+// VIEW: MEDIA ITEM:
+
+media.view.MEXPItem = wp.Backbone.View.extend({
+
+    tagName   : 'li',
+    className : 'mexp-item attachment',
+
+    render: function() {
+
+    	this.template = media.template( 'mexp-' + this.options.service.id + '-item-' + this.options.tab );
+       	this.$el.html( this.template( this.model.toJSON() ) );
+
+        return this;
+
+    }
+
+});
+
+// VIEW - BOTTOM TOOLBAR
+
+media.view.Toolbar.MEXP = media.view.Toolbar.extend({
+
+	initialize: function() {
+
+		var serviceName = this.controller.state().id.replace( /mexp-service-/g, '');
+
+		_.defaults( this.options, {
+		    event : 'inserter',
+		    close : false,
+			items : {
+			    // See wp.media.view.Button
+			    inserter     : {
+			        id       : 'mexp-button',
+			        style    : 'primary',
+			        text     : ( 'undefined' != typeof( mexp.services[serviceName].labels.insert ) && mexp.services[serviceName].labels.insert ) ? mexp.services[serviceName].labels.insert : mexp.labels.insert,
+			        priority : 80,
+			        click    : function() {
+						if ( this.controller.state().props && this.controller.state().props.at(0).get( 'sideload' ) )
+							this.controller.state().mexpSideload();
+						else
+							this.controller.state().mexpInsert();
+					}
+			    }
+			}
+		});
+
+		media.view.Toolbar.prototype.initialize.apply( this, arguments );
+
+		this.set( 'pagination', new media.view.Button({
+			tagName: 'a',
+			classes: 'mexp-pagination button button-secondary',
+			id: serviceName + '-loadmore',
+			text: mexp.labels.loadmore,
+			priority: -20
+		}) );
+	},
+
+	refresh: function() {
+
+		var selection = this.controller.state().props.get( '_all' ).get( 'selection' );
+
+		// @TODO i think this is redundant
+		this.get( 'inserter' ).model.set( 'disabled', !selection.length );
+
+		media.view.Toolbar.prototype.refresh.apply( this, arguments );
+
+	}
+
+});
+
+// VIEW - MEDIA CONTENT AREA
+
+media.view.MEXP = media.View.extend({
+
+	events: {
+		'click .mexp-item-area'     : 'toggleSelectionHandler',
+		'click .mexp-item .check'   : 'removeSelectionHandler',
+		'submit .mexp-toolbar form' : 'updateInput'
+	},
+
+	initialize: function() {
+
+		/* fired when you switch router tabs */
+		
+		var _this = this;
+
+		this.collection = new Backbone.Collection();
+		this.service    = this.options.service;
+		this.tab        = this.options.tab;
+
+		this.createToolbar();
+		this.clearItems();
+
+		if ( this.model.get( 'items' ) && this.model.get( 'alwaysRefresh' ) ) {
+			this.model.set( 'items', [] );
+			this.model.set( 'cursor', null );
+			this.collection = new Backbone.Collection();
+			this.collection.once( 'reset', this.render, this );
+			this.collection.reset();
+			this.model.set( 'fetchOnRender', false );
+			this.loading();
+			this.fetchItems();
+
+			jQuery( '#' + this.service.id + '-loadmore' ).attr( 'disabled', false ).show();
+		} else if ( this.model.get( 'items' ) ) {
+
+			this.collection = new Backbone.Collection();
+			this.collection.reset( this.model.get( 'items' ) );
+
+			jQuery( '#' + this.service.id + '-loadmore' ).attr( 'disabled', false ).show();
+		} else {
+			jQuery( '#' + this.service.id + '-loadmore' ).hide();
+		}
+
+		// @TODO do this somewhere else:
+		// @TODO this gets reverted anyway when the button model's disabled state changes. look into it.
+		//jQuery( '#mexp-button' ).text( this.service.labels.insert );
+
+		this.collection.on( 'reset', this.render, this );
+
+		this.model.on( 'change:params', this.changedParams, this );
+
+		this.on( 'loading',       this.loading, this );
+		this.on( 'loaded',        this.loaded, this );
+		this.on( 'change:params', this.changedParams, this );
+		this.on( 'change:page',   this.changedPage, this );
+
+		jQuery( '.mexp-pagination' ).click( function( event ) {
+			_this.paginate( event );
+		} );
+
+		if ( _this.model.get( 'fetchOnRender' ) ) {
+			_this.model.set( 'fetchOnRender', false );
+			_this.loading();
+			_this.fetchItems();
+		}
+
+	},
+
+	render: function() {
+
+		/* fired when you switch router tabs */
+
+		var selection = this.getSelection();
+
+		if ( this.collection && this.collection.models.length ) {
+
+			this.clearItems();
+
+			var container = document.createDocumentFragment();
+
+			this.collection.each( function( model ) {
+				container.appendChild( this.renderItem( model ) );
+			}, this );
+
+			this.$el.find( '.mexp-items' ).append( container );
+
+		}
+
+		selection.each( function( model ) {
+			var id = '#mexp-item-' + this.service.id + '-' + this.tab + '-' + model.get( 'id' );
+			this.$el.find( id ).closest( '.mexp-item' ).addClass( 'selected details' );
+		}, this );
+
+		jQuery( '#mexp-button' ).prop( 'disabled', !selection.length );
+
+		return this;
+
+	},
+
+	renderItem : function( model ) {
+
+		var view = new media.view.MEXPItem({
+			model   : model,
+			service : this.service,
+			tab     : this.tab
+		});
+
+		return view.render().el;
+
+	},
+
+	createToolbar: function() {
+
+		// @TODO this could be a separate view:
+		html = '<div class="mexp-error attachments"></div>';
+		this.$el.prepend( html );
+
+		// @TODO this could be a separate view:
+		html = '<div class="mexp-empty attachments"></div>';
+		this.$el.prepend( html );
+
+		// @TODO this could be a separate view:
+		html = '<ul class="mexp-items attachments clearfix"></ul>';
+		this.$el.append( html );
+
+		// @TODO this could be a separate view:
+		var toolbar_template = media.template( 'mexp-' + this.service.id + '-search-' + this.tab );
+		var toolbar_html = toolbar_template( this.model.toJSON() );
+		// Only append the toolbar if the toolbar has content.
+		if ( toolbar_html.replace( /^\s+$/, '').length )
+			this.$el.prepend( '<div class="mexp-toolbar media-toolbar clearfix">' + toolbar_html + '</div>' );
+
+	},
+
+	removeSelectionHandler: function( event ) {
+
+		var target = jQuery( '#' + event.currentTarget.id );
+		var id     = target.attr( 'data-id' );
+
+		this.removeFromSelection( target, id );
+
+		event.preventDefault();
+
+	},
+
+	toggleSelectionHandler: function( event ) {
+
+		if ( event.target.href )
+			return;
+
+		var target = jQuery( '#' + event.currentTarget.id );
+		var id     = target.attr( 'data-id' );
+
+		if ( this.getSelection().get( id ) )
+			this.removeFromSelection( target, id );
+		else
+			this.addToSelection( target, id );
+
+	},
+
+	addToSelection: function( target, id ) {
+
+		target.closest( '.mexp-item' ).addClass( 'selected details' );
+
+		this.getSelection().add( this.collection._byId[id] );
+
+		// @TODO why isn't this triggered by the above line?
+		this.controller.state().props.trigger( 'change:selection' );
+
+	},
+
+	removeFromSelection: function( target, id ) {
+
+		target.closest( '.mexp-item' ).removeClass( 'selected details' );
+
+		this.getSelection().remove( this.collection._byId[id] );
+
+		// @TODO why isn't this triggered by the above line?
+		this.controller.state().props.trigger( 'change:selection' );
+
+	},
+
+	clearSelection: function() {
+		this.getSelection().reset();
+	},
+
+	getSelection : function() {
+		return this.controller.state().props.get( '_all' ).get( 'selection' );
+	},
+
+	clearItems: function() {
+
+		this.$el.find( '.mexp-item' ).removeClass( 'selected details' );
+		this.$el.find( '.mexp-items' ).empty();
+		this.$el.find( '.mexp-pagination' ).hide();
+
+	},
+
+	loading: function() {
+
+		// show spinner
+		this.$el.find( '.mexp-loading' ).show();
+
+		// hide messages
+		this.$el.find( '.mexp-error' ).hide().text('');
+		this.$el.find( '.mexp-empty' ).hide().text('');
+
+		// disable 'load more' button
+		jQuery( '#' + this.service.id + '-loadmore' ).attr( 'disabled', true );
+	},
+
+	loaded: function( response ) {
+
+		// hide spinner
+		this.$el.find( '.mexp-loading' ).hide();
+
+		// disable 'load more' button
+		if ( this.model.get( 'max_id' ) == 0 )
+			jQuery( '#' + this.service.id + '-loadmore' ).hide();
+		else
+			jQuery( '#' + this.service.id + '-loadmore' ).show();
+
+	},
+
+	fetchItems: function() {
+
+		this.trigger( 'loading' );
+
+		var data = {
+			_nonce  : mexp._nonce,
+			service : this.service.id,
+			tab     : this.tab,
+			params  : this.model.get( 'params' ),
+			page    : this.model.get( 'page' ),
+			max_id  : this.model.get( 'max_id' ),
+			cursor  : this.model.get( 'cursor' )
+		};
+
+		media.ajax( 'mexp_request', {
+			context : this,
+			success : this.fetchedSuccess,
+			error   : this.fetchedError,
+			data    : data
+		} );
+
+	},
+
+	fetchedSuccess: function( response ) {
+
+		if ( !this.model.get( 'page' ) ) {
+
+			if ( !response.items ) {
+				this.fetchedEmpty( response );
+				return;
+			}
+
+			this.model.set( 'min_id', response.meta.min_id );
+			this.model.set( 'items',  response.items );
+
+			this.collection.reset( response.items );
+		} else {
+
+			if ( !response.items ) {
+				this.fetchedEmpty( response );
+				return;
+			}
+
+			this.model.set( 'items', this.model.get( 'items' ).concat( response.items ) );
+
+			var collection = new Backbone.Collection( response.items );
+			var container  = document.createDocumentFragment();
+
+			this.collection.add( collection.models );
+
+			collection.each( function( model ) {
+				container.appendChild( this.renderItem( model ) );
+			}, this );
+
+			this.$el.find( '.mexp-items' ).append( container );
+
+		}
+
+		jQuery( '#' + this.service.id + '-loadmore' ).attr( 'disabled', false ).show();
+		this.model.set( 'max_id', response.meta.max_id );
+
+		if ( response.meta.cursor )
+			this.model.set( 'cursor', response.meta.cursor );
+
+		this.trigger( 'loaded loaded:success', response );
+
+	},
+
+	fetchedEmpty: function( response ) {
+
+		this.$el.find( '.mexp-empty' ).text( this.service.labels.noresults ).show();
+		this.$el.find( '.mexp-pagination' ).hide();
+
+		this.trigger( 'loaded loaded:noresults', response );
+
+	},
+
+	fetchedError: function( response ) {
+
+		this.$el.find( '.mexp-error' ).text( response.error_message ).show();
+		jQuery( '#' + this.service.id + '-loadmore' ).attr( 'disabled', false ).show();
+		this.trigger( 'loaded loaded:error', response );
+
+	},
+
+	updateInput: function( event ) {
+
+		// triggered when a search is submitted
+
+		var params = this.model.get( 'params' );
+		var els = this.$el.find( '.mexp-toolbar' ).find( ':input' ).each( function( k, el ) {
+			var n = jQuery(this).attr('name');
+			if ( n )
+				params[n] = jQuery(this).val();
+		} );
+		
+		this.clearSelection();
+		jQuery( '#mexp-button' ).attr( 'disabled', 'disabled' );
+		this.model.set( 'params', params );
+		this.trigger( 'change:params' ); // why isn't this triggering automatically? might be because params is an object
+
+		event.preventDefault();
+
+	},
+
+	paginate : function( event ) {
+
+		if( 0 == this.collection.length )
+			return;
+
+		var page = this.model.get( 'page' ) || 1;
+
+		this.model.set( 'page', page + 1 );
+		this.trigger( 'change:page' );
+
+		event.preventDefault();
+
+	},
+
+	changedPage: function() {
+
+		// triggered when the pagination is changed
+
+		this.fetchItems();
+
+	},
+
+	changedParams: function() {
+
+		// triggered when the search parameters are changed
+
+		this.model.set( 'page',   null );
+		this.model.set( 'min_id', null );
+		this.model.set( 'max_id', null );
+		this.model.set( 'cursor', null );
+
+		this.clearItems();
+		this.fetchItems();
+
+	}
+
+});
+
+// VIEW - MEDIA FRAME (MENU BAR)	
+
+var post_frame = media.view.MediaFrame.Post;
+
+media.view.MediaFrame.Post = post_frame.extend({
+
+	initialize: function() {
+
+		post_frame.prototype.initialize.apply( this, arguments );
+
+		_.each( mexp.services, function( service, service_id ) {
+
+			var id = 'mexp-service-' + service.id;
+			var controller = {
+				id      : id,
+				router  : id + '-router',
+				toolbar : id + '-toolbar',
+				menu    : 'default',
+				title   : service.labels.title,
+				tabs    : service.tabs,
+				priority: 100 // places it above Insert From URL
+			};
+
+			for ( var tab in service.tabs ) {
+
+				// Content
+				this.on( 'content:render:' + id + '-content-' + tab, _.bind( this.mexpContentRender, this, service, tab ) );
+
+				// Set the default tab
+				if ( service.tabs[tab].defaultTab )
+					controller.content = id + '-content-' + tab;
+
+			}
+
+			this.states.add([
+				new media.controller.MEXP( controller )
+			]);
+
+			// Tabs
+			this.on( 'router:create:' + id + '-router', this.createRouter, this );
+			this.on( 'router:render:' + id + '-router', _.bind( this.mexpRouterRender, this, service ) );
+
+			// Toolbar
+			this.on( 'toolbar:create:' + id + '-toolbar', this.mexpToolbarCreate, this );
+			//this.on( 'toolbar:render:' + id + '-toolbar', _.bind( this.mexpToolbarRender, this, service ) );
+
+		}, this );
+
+	},
+
+	mexpRouterRender : function( service, view ) {
+
+		var id   = 'mexp-service-' + service.id;
+		var tabs = {};
+
+		for ( var tab in service.tabs ) {
+			tab_id = id + '-content-' + tab;
+			tabs[tab_id] = {
+				text : service.tabs[tab].text
+			};
+		}
+
+		view.set( tabs );
+
+	},
+
+	mexpToolbarRender : function( service, view ) {
+
+		view.set( 'selection', new media.view.Selection.MEXP({
+			service    : service,
+			controller : this,
+			collection : this.state().props.get('_all').get('selection'),
+			priority   : -40
+		}).render() );
+
+	},
+
+	mexpContentRender : function( service, tab ) {
+
+		/* called when a tab becomes active */
+
+		this.content.set( new media.view.MEXP( {
+			service    : service,
+			controller : this,
+			model      : this.state().props.get( tab ),
+			tab        : tab,
+			className  : 'clearfix attachments-browser mexp-content mexp-content-' + service.id + ' mexp-content-' + service.id + '-' + tab
+		} ) );
+
+	},
+
+	mexpToolbarCreate : function( toolbar ) {
+
+		toolbar.view = new media.view.Toolbar.MEXP( {
+			controller : this
+		} );
+
+	}
+
+});
+
+// CONTROLLER:
+
+media.controller.MEXP = media.controller.State.extend({
+
+	initialize: function( options ) {
+
+		this.props = new Backbone.Collection();
+
+		for ( var tab in options.tabs ) {
+
+			this.props.add( new Backbone.Model({
+				id     : tab,
+				params : {},
+				page   : null,
+				min_id : null,
+				max_id : null,
+				cursor : null,
+				fetchOnRender : options.tabs[ tab ].fetchOnRender,
+				alwaysRefresh : options.tabs[ tab ].alwaysRefresh,
+				sideload : options.tabs[ tab ].sideload
+			}) );
+
+		}
+
+		this.props.add( new Backbone.Model({
+			id        : '_all',
+			selection : new Backbone.Collection()
+		}) );
+
+		this.props.on( 'change:selection', this.refresh, this );
+
+	},
+
+	refresh: function() {
+		this.frame.toolbar.get().refresh();
+	},
+
+	mexpInsert: function() {
+
+		var selection = this.frame.content.get().getSelection(),
+		urls          = [];
+
+		selection.each( function( model ) {
+			urls.push( model.get( 'url' ) );
+		}, this );
+
+		if ( typeof(tinymce) === 'undefined' || tinymce.activeEditor === null || tinymce.activeEditor.isHidden() ) {
+			media.editor.insert( _.toArray( urls ).join( "\n\n" ) );
+		} else {
+			media.editor.insert( "<p>" + _.toArray( urls ).join( "</p><p>" ) + "</p>" );
+		}
+
+		selection.reset();
+		this.frame.close();
+
+	},
+
+	mexpSideload : function() {
+
+		var selection = this.frame.content.get().getSelection(),
+			serviceName = this.attributes.id.replace( /mexp-service-/g, '' ),
+			nonce = jQuery( '#' + serviceName + '_verify' ).val(),
+			self = this;
+
+		this.frame.setState( 'insert' );
+		selection.each( function( model ) {
+			var filename = model.get( 'content' ),
+				new_selection = this.frame.state().get( 'selection' ),
+				file = {},
+				attributes = {
+					file: file,
+					uploading: true,
+					date: new Date(),
+					filename: filename,
+					menuOrder: 0,
+					uploadedTo: wp.media.model.settings.post.id,
+					type : 'image',
+					subtype : 'jpg',
+					loaded : 0,
+					size : 100,
+					percent : 40
+				};
+
+			file.attachment = wp.media.model.Attachment.create( attributes );
+			wp.Uploader.queue.add( file.attachment );
+			new_selection.add( file.attachment ? [ file.attachment ] : [] );
+
+			jQuery.post( ajaxurl, {
+				action: serviceName + '_sideload',
+				nonce: nonce,
+				url: filename
+			} ).done( function( r ){
+				self.frame.uploader.uploader.uploader.trigger( 'FileUploaded', file, {
+					response : r,
+					status : 200
+				});
+			});
+		}, this );
+		selection.reset();
+	}
+
+});
+;
+/*
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
+
+var mexp_twitter_location_js_loaded = false;
+var mexp_twitter_location_map       = null;
+var mexp_twitter_location_marker    = null;
+var mexp_twitter_location_timeout   = null;
+var pf = wp.media.view.MediaFrame.Post;
+
+wp.media.view.MediaFrame.Post = pf.extend({
+
+	initialize: function() {
+
+		pf.prototype.initialize.apply( this, arguments );
+
+		this.on( 'content:render:mexp-service-twitter-content-location', _.bind( function() {
+
+			this.state().frame.content.get().on( 'loaded', function( response ) {
+
+				if ( ! response || ! response.meta || ! response.meta.coords )
+					return;
+
+				var ll = new google.maps.LatLng( response.meta.coords.lat, response.meta.coords.lng );
+
+				mexp_twitter_location_marker.setPosition( ll );
+				mexp_twitter_location_map.panTo( ll );
+
+			} );
+
+			if ( !mexp_twitter_location_js_loaded ) {
+				$('#mexp_twitter_map_canvas').css( 'background-image', 'url(' + mexp.admin_url + '/images/wpspin_light.gif)');
+				if ( ! google.maps ) { // Google Maps is not loaded yet
+                    var script = document.createElement("script");
+                    script.type = "text/javascript";
+                    script.src = mexp.services.twitter.labels.gmaps_url + '?key=' + mexp.services.twitter.labels.api_key + '&callback=mexp_twitter_location_initialize';
+                    document.body.appendChild(script);
+				} else {
+                    mexp_twitter_location_initialize();
+				}
+			} else {
+				mexp_twitter_location_initialize();
+			}
+
+		}, this ) );
+
+	}
+
+});
+
+function mexp_twitter_location_initialize() {
+
+	var callback = function() {
+		mexp_twitter_location_fetch( mexp_twitter_location_load );
+	};
+
+	if ( navigator.geolocation ) {
+		navigator.geolocation.getCurrentPosition( mexp_twitter_location_load, callback );
+		mexp_twitter_location_timeout = window.setTimeout( callback, 8000 );
+	} else {
+		mexp_twitter_location_fetch( callback );
+	}
+
+	mexp_twitter_location_js_loaded = true;
+
+}
+
+function mexp_twitter_location_fetch( callback ) {
+
+	callback( {
+		coords : google.loader.ClientLocation
+	} );
+
+}
+
+function mexp_twitter_location_load( position ) {
+
+	var lat, lng;
+	$ = jQuery;
+
+	window.clearTimeout( mexp_twitter_location_timeout );
+
+	// Enable the visual refresh
+	google.maps.visualRefresh = true;
+
+	var loc = $('#mexp-twitter-search-location-coords').val();
+
+	if ( loc ) {
+		ll = loc.split( ',' );
+		lat = ll[0];
+		lng = ll[1];
+	} else if ( position.coords ) {
+		lat = position.coords.latitude;
+		lng = position.coords.longitude;
+		$('#mexp-twitter-search-location-coords').val( lat + ',' + lng );
+	}
+
+	var radius = $('#mexp-twitter-search-location-radius').val();
+	var mapOptions = {
+		center            : new google.maps.LatLng( lat, lng ),
+		zoom              : 10,
+		mapTypeId         : google.maps.MapTypeId.ROADMAP,
+		mapTypeControl    : false,
+		streetViewControl : false
+	};
+	mexp_twitter_location_map = new google.maps.Map( document.getElementById( 'mexp_twitter_map_canvas' ), mapOptions );
+	mexp_twitter_location_marker = new google.maps.Marker({
+		position  : new google.maps.LatLng( lat, lng ),
+		draggable : true,
+		map       : mexp_twitter_location_map
+	});
+	var circle = new google.maps.Circle({
+		map          : mexp_twitter_location_map,
+		radius       : ( radius * 1000 ), // metres
+		strokeWeight : 1,
+		fillColor    : 'blue',
+		fillOpacity  : 0.15,
+		strokeColor  : '#fff'
+	});
+	circle.bindTo( 'center', mexp_twitter_location_marker, 'position' );
+
+	$('#mexp-twitter-search-location-radius').on('change',function(){
+		circle.setRadius( $(this).val() * 1000 );
+	});
+	$('#mexp-twitter-search-location-name').on('change',function(){
+		$('#mexp-twitter-search-location-coords').val('');
+	});
+
+	google.maps.event.addListener(mexp_twitter_location_marker, 'dragend', function() {
+		p = mexp_twitter_location_marker.getPosition();
+		mexp_twitter_location_map.panTo( p );
+		$('#mexp-twitter-search-location-coords').val( p.lat() + ',' + p.lng() ).closest('form').submit();
+	});
+
+}
+;
+/**
+ * VideoPress admin media scripts
+ */
+(function($) {
+	var VideoPressModalView = Backbone.View.extend({
+		'className': 'videopress-modal-container',
+		'template': wp.media.template( 'videopress-media-modal' ),
+
+		// Render the VideoPress modal with a video object by guid.
+		render: function( guid ) {
+			this.delegateEvents( {
+				'click .videopress-modal-close': 'closeModal',
+				'click .videopress-modal-backdrop': 'closeModal'
+			} );
+
+			this.guid = guid;
+
+			if ( ! this.$frame )
+				this.$frame = $( '.media-frame-content' );
+
+			this.$video = $( '#videopress-object-' + this.guid );
+			this.$el.html( this.template( { 'video' : this.$video.html() } ) );
+			this.$modal = this.$( '.videopress-modal' );
+			this.$modal.hide();
+
+			this.$frame.append( this.$el );
+			this.$modal.slideDown( 'fast' );
+
+			return this;
+		},
+
+		closeModal: function() {
+			var view = this;
+			var guid = this.guid;
+
+			this.$modal.slideUp( 'fast', function() { view.remove(); } );
+
+			$.post( ajaxurl, { action: 'videopress_get_screenshot', guid: guid }, function(r) {
+				if ( 'success' == r.status && r.data.length > 0 ) {
+					var $thumbnail = $( '#videopress-thumbnail-' + guid );
+					var $img = $( '<img />' );
+
+					// Avoid the jumpy effect
+					$thumbnail.height( $thumbnail.find( 'img' ).height() );
+
+					$img.attr( 'src', r.data );
+					$thumbnail.html( $img );
+				}
+			}, 'json' );
+
+			return this;
+		}
+	});
+
+	var VideoPressModal = new VideoPressModalView();
+
+	$( document ).on( 'click', 'a.videopress-preview', function() {
+		VideoPressModal.render( $( this ).data( 'videopress-guid' ) );
+	} );
+
+	$( document ).on( 'vpRefreshThumbnail', function( e, guid ) {
+		console.log( guid );
+	} );
+})(jQuery);;
+/**
+ * Jetpack Gallery Settings
+ */
+( function( $ ) {
+	var media = wp.media;
+
+	// Wrap the render() function to append controls.
+	media.view.Settings.Gallery = media.view.Settings.Gallery.extend( {
+		render: function() {
+			var $el = this.$el;
+
+			media.view.Settings.prototype.render.apply( this, arguments );
+
+			// Append the type template and update the settings.
+			$el.append( media.template( 'jetpack-gallery-settings' ) );
+			media.gallery.defaults.type = 'default'; // lil hack that lets media know there's a type attribute.
+			this.update.apply( this, [ 'type' ] );
+
+			// Hide the Columns setting for all types except Default
+			$el
+				.find( 'select[name=type]' )
+				.on( 'change', function() {
+					var columnSetting = $el.find( 'select[name=columns]' ).closest( 'label.setting' );
+
+					if ( 'default' === $( this ).val() || 'thumbnails' === $( this ).val() ) {
+						columnSetting.show();
+					} else {
+						columnSetting.hide();
+					}
+				} )
+				.change();
+
+			return this;
+		},
+	} );
+} )( jQuery );
+;
+//fgnass.github.com/spin.js#v1.3
+
+/**
+ * Copyright (c) 2011-2013 Felix Gnass
+ * Licensed under the MIT license
+ */
+(function(root, factory) {
+
+  /* CommonJS */
+  if (typeof exports == 'object')  module.exports = factory()
+
+  /* AMD module */
+  else if (typeof define == 'function' && define.amd) define(factory)
+
+  /* Browser global */
+  else root.Spinner = factory()
+}
+(this, function() {
+  "use strict";
+
+  var prefixes = ['webkit', 'Moz', 'ms', 'O'] /* Vendor prefixes */
+    , animations = {} /* Animation rules keyed by their name */
+    , useCssAnimations /* Whether to use CSS animations or setTimeout */
+
+  /**
+   * Utility function to create elements. If no tag name is given,
+   * a DIV is created. Optionally properties can be passed.
+   */
+  function createEl(tag, prop) {
+    var el = document.createElement(tag || 'div')
+      , n
+
+    for(n in prop) el[n] = prop[n]
+    return el
+  }
+
+  /**
+   * Appends children and returns the parent.
+   */
+  function ins(parent /* child1, child2, ...*/) {
+    for (var i=1, n=arguments.length; i<n; i++)
+      parent.appendChild(arguments[i])
+
+    return parent
+  }
+
+  /**
+   * Insert a new stylesheet to hold the @keyframe or VML rules.
+   */
+  var sheet = (function() {
+    var el = createEl('style', {type : 'text/css'})
+    ins(document.getElementsByTagName('head')[0], el)
+    return el.sheet || el.styleSheet
+  }())
+
+  /**
+   * Creates an opacity keyframe animation rule and returns its name.
+   * Since most mobile Webkits have timing issues with animation-delay,
+   * we create separate rules for each line/segment.
+   */
+  function addAnimation(alpha, trail, i, lines) {
+    var name = ['opacity', trail, ~~(alpha*100), i, lines].join('-')
+      , start = 0.01 + i/lines * 100
+      , z = Math.max(1 - (1-alpha) / trail * (100-start), alpha)
+      , prefix = useCssAnimations.substring(0, useCssAnimations.indexOf('Animation')).toLowerCase()
+      , pre = prefix && '-' + prefix + '-' || ''
+
+    if (!animations[name]) {
+      sheet.insertRule(
+        '@' + pre + 'keyframes ' + name + '{' +
+        '0%{opacity:' + z + '}' +
+        start + '%{opacity:' + alpha + '}' +
+        (start+0.01) + '%{opacity:1}' +
+        (start+trail) % 100 + '%{opacity:' + alpha + '}' +
+        '100%{opacity:' + z + '}' +
+        '}', sheet.cssRules.length)
+
+      animations[name] = 1
+    }
+
+    return name
+  }
+
+  /**
+   * Tries various vendor prefixes and returns the first supported property.
+   */
+  function vendor(el, prop) {
+    var s = el.style
+      , pp
+      , i
+
+    if(s[prop] !== undefined) return prop
+    prop = prop.charAt(0).toUpperCase() + prop.slice(1)
+    for(i=0; i<prefixes.length; i++) {
+      pp = prefixes[i]+prop
+      if(s[pp] !== undefined) return pp
+    }
+  }
+
+  /**
+   * Sets multiple style properties at once.
+   */
+  function css(el, prop) {
+    for (var n in prop)
+      el.style[vendor(el, n)||n] = prop[n]
+
+    return el
+  }
+
+  /**
+   * Fills in default values.
+   */
+  function merge(obj) {
+    for (var i=1; i < arguments.length; i++) {
+      var def = arguments[i]
+      for (var n in def)
+        if (obj[n] === undefined) obj[n] = def[n]
+    }
+    return obj
+  }
+
+  /**
+   * Returns the absolute page-offset of the given element.
+   */
+  function pos(el) {
+    var o = { x:el.offsetLeft, y:el.offsetTop }
+    while((el = el.offsetParent))
+      o.x+=el.offsetLeft, o.y+=el.offsetTop
+
+    return o
+  }
+
+  // Built-in defaults
+
+  var defaults = {
+    lines: 12,            // The number of lines to draw
+    length: 7,            // The length of each line
+    width: 5,             // The line thickness
+    radius: 10,           // The radius of the inner circle
+    rotate: 0,            // Rotation offset
+    corners: 1,           // Roundness (0..1)
+    color: '#000',        // #rgb or #rrggbb
+    direction: 1,         // 1: clockwise, -1: counterclockwise
+    speed: 1,             // Rounds per second
+    trail: 100,           // Afterglow percentage
+    opacity: 1/4,         // Opacity of the lines
+    fps: 20,              // Frames per second when using setTimeout()
+    zIndex: 2e9,          // Use a high z-index by default
+    className: 'spinner', // CSS class to assign to the element
+    top: 'auto',          // center vertically
+    left: 'auto',         // center horizontally
+    position: 'relative'  // element position
+  }
+
+  /** The constructor */
+  function Spinner(o) {
+    if (typeof this == 'undefined') return new Spinner(o)
+    this.opts = merge(o || {}, Spinner.defaults, defaults)
+  }
+
+  // Global defaults that override the built-ins:
+  Spinner.defaults = {}
+
+  merge(Spinner.prototype, {
+
+    /**
+     * Adds the spinner to the given target element. If this instance is already
+     * spinning, it is automatically removed from its previous target b calling
+     * stop() internally.
+     */
+    spin: function(target) {
+      this.stop()
+
+      var self = this
+        , o = self.opts
+        , el = self.el = css(createEl(0, {className: o.className}), {position: o.position, width: 0, zIndex: o.zIndex})
+        , mid = o.radius+o.length+o.width
+        , ep // element position
+        , tp // target position
+
+      if (target) {
+        target.insertBefore(el, target.firstChild||null)
+        tp = pos(target)
+        ep = pos(el)
+        css(el, {
+          left: (o.left == 'auto' ? tp.x-ep.x + (target.offsetWidth >> 1) : parseInt(o.left, 10) + mid) + 'px',
+          top: (o.top == 'auto' ? tp.y-ep.y + (target.offsetHeight >> 1) : parseInt(o.top, 10) + mid)  + 'px'
+        })
+      }
+
+      el.setAttribute('role', 'progressbar')
+      self.lines(el, self.opts)
+
+      if (!useCssAnimations) {
+        // No CSS animation support, use setTimeout() instead
+        var i = 0
+          , start = (o.lines - 1) * (1 - o.direction) / 2
+          , alpha
+          , fps = o.fps
+          , f = fps/o.speed
+          , ostep = (1-o.opacity) / (f*o.trail / 100)
+          , astep = f/o.lines
+
+        ;(function anim() {
+          i++;
+          for (var j = 0; j < o.lines; j++) {
+            alpha = Math.max(1 - (i + (o.lines - j) * astep) % f * ostep, o.opacity)
+
+            self.opacity(el, j * o.direction + start, alpha, o)
+          }
+          self.timeout = self.el && setTimeout(anim, ~~(1000/fps))
+        })()
+      }
+      return self
+    },
+
+    /**
+     * Stops and removes the Spinner.
+     */
+    stop: function() {
+      var el = this.el
+      if (el) {
+        clearTimeout(this.timeout)
+        if (el.parentNode) el.parentNode.removeChild(el)
+        this.el = undefined
+      }
+      return this
+    },
+
+    /**
+     * Internal method that draws the individual lines. Will be overwritten
+     * in VML fallback mode below.
+     */
+    lines: function(el, o) {
+      var i = 0
+        , start = (o.lines - 1) * (1 - o.direction) / 2
+        , seg
+
+      function fill(color, shadow) {
+        return css(createEl(), {
+          position: 'absolute',
+          width: (o.length+o.width) + 'px',
+          height: o.width + 'px',
+          background: color,
+          boxShadow: shadow,
+          transformOrigin: 'left',
+          transform: 'rotate(' + ~~(360/o.lines*i+o.rotate) + 'deg) translate(' + o.radius+'px' +',0)',
+          borderRadius: (o.corners * o.width>>1) + 'px'
+        })
+      }
+
+      for (; i < o.lines; i++) {
+        seg = css(createEl(), {
+          position: 'absolute',
+          top: 1+~(o.width/2) + 'px',
+          transform: o.hwaccel ? 'translate3d(0,0,0)' : '',
+          opacity: o.opacity,
+          animation: useCssAnimations && addAnimation(o.opacity, o.trail, start + i * o.direction, o.lines) + ' ' + 1/o.speed + 's linear infinite'
+        })
+
+        if (o.shadow) ins(seg, css(fill('#000', '0 0 4px ' + '#000'), {top: 2+'px'}))
+
+        ins(el, ins(seg, fill(o.color, '0 0 1px rgba(0,0,0,.1)')))
+      }
+      return el
+    },
+
+    /**
+     * Internal method that adjusts the opacity of a single line.
+     * Will be overwritten in VML fallback mode below.
+     */
+    opacity: function(el, i, val) {
+      if (i < el.childNodes.length) el.childNodes[i].style.opacity = val
+    }
+
+  })
+
+
+  function initVML() {
+
+    /* Utility function to create a VML tag */
+    function vml(tag, attr) {
+      return createEl('<' + tag + ' xmlns="urn:schemas-microsoft.com:vml" class="spin-vml">', attr)
+    }
+
+    // No CSS transforms but VML support, add a CSS rule for VML elements:
+    sheet.addRule('.spin-vml', 'behavior:url(#default#VML)')
+
+    Spinner.prototype.lines = function(el, o) {
+      var r = o.length+o.width
+        , s = 2*r
+
+      function grp() {
+        return css(
+          vml('group', {
+            coordsize: s + ' ' + s,
+            coordorigin: -r + ' ' + -r
+          }),
+          { width: s, height: s }
+        )
+      }
+
+      var margin = -(o.width+o.length)*2 + 'px'
+        , g = css(grp(), {position: 'absolute', top: margin, left: margin})
+        , i
+
+      function seg(i, dx, filter) {
+        ins(g,
+          ins(css(grp(), {rotation: 360 / o.lines * i + 'deg', left: ~~dx}),
+            ins(css(vml('roundrect', {arcsize: o.corners}), {
+                width: r,
+                height: o.width,
+                left: o.radius,
+                top: -o.width>>1,
+                filter: filter
+              }),
+              vml('fill', {color: o.color, opacity: o.opacity}),
+              vml('stroke', {opacity: 0}) // transparent stroke to fix color bleeding upon opacity change
+            )
+          )
+        )
+      }
+
+      if (o.shadow)
+        for (i = 1; i <= o.lines; i++)
+          seg(i, -2, 'progid:DXImageTransform.Microsoft.Blur(pixelradius=2,makeshadow=1,shadowopacity=.3)')
+
+      for (i = 1; i <= o.lines; i++) seg(i)
+      return ins(el, g)
+    }
+
+    Spinner.prototype.opacity = function(el, i, val, o) {
+      var c = el.firstChild
+      o = o.shadow && o.lines || 0
+      if (c && i+o < c.childNodes.length) {
+        c = c.childNodes[i+o]; c = c && c.firstChild; c = c && c.firstChild
+        if (c) c.opacity = val
+      }
+    }
+  }
+
+  var probe = css(createEl('group'), {behavior: 'url(#default#VML)'})
+
+  if (!vendor(probe, 'transform') && probe.adj) initVML()
+  else useCssAnimations = vendor(probe, 'animation')
+
+  return Spinner
+
+}));
+;
+/**
+ * Copyright (c) 2011-2013 Felix Gnass
+ * Licensed under the MIT license
+ */
+
+/*
+
+Basic Usage:
+============
+
+$('#el').spin(); // Creates a default Spinner using the text color of #el.
+$('#el').spin({ ... }); // Creates a Spinner using the provided options.
+
+$('#el').spin(false); // Stops and removes the spinner.
+
+Using Presets:
+==============
+
+$('#el').spin('small'); // Creates a 'small' Spinner using the text color of #el.
+$('#el').spin('large', '#fff'); // Creates a 'large' white Spinner.
+
+Adding a custom preset:
+=======================
+
+$.fn.spin.presets.flower = {
+  lines: 9
+  length: 10
+  width: 20
+  radius: 0
+}
+
+$('#el').spin('flower', 'red');
+
+*/
+
+(function(factory) {
+
+  if (typeof exports == 'object') {
+    // CommonJS
+    factory(require('jquery'), require('spin'))
+  }
+  else if (typeof define == 'function' && define.amd) {
+    // AMD, register as anonymous module
+    define(['jquery', 'spin'], factory)
+  }
+  else {
+    // Browser globals
+    if (!window.Spinner) throw new Error('Spin.js not present')
+    factory(window.jQuery, window.Spinner)
+  }
+
+}(function($, Spinner) {
+
+  $.fn.spin = function(opts, color) {
+
+    return this.each(function() {
+      var $this = $(this),
+        data = $this.data();
+
+      if (data.spinner) {
+        data.spinner.stop();
+        delete data.spinner;
+      }
+      if (opts !== false) {
+        opts = $.extend(
+          { color: color || $this.css('color') },
+          $.fn.spin.presets[opts] || opts
+        )
+        // Begin WordPress Additions
+        // To use opts.right, you need to have specified a length, width, and radius.
+        if ( typeof opts.right !== 'undefined' && typeof opts.length !== 'undefined'
+          && typeof opts.width !== 'undefined' && typeof opts.radius !== 'undefined' ) {
+          var pad = $this.css( 'padding-left' );
+          pad = ( typeof pad === 'undefined' ) ? 0 : parseInt( pad, 10 );
+          opts.left = $this.outerWidth() - ( 2 * ( opts.length + opts.width + opts.radius ) ) - pad - opts.right;
+          delete opts.right;
+        }
+        // End WordPress Additions
+        data.spinner = new Spinner(opts).spin(this)
+      }
+    })
+  }
+
+  $.fn.spin.presets = {
+    tiny: { lines: 8, length: 2, width: 2, radius: 3 },
+    small: { lines: 8, length: 4, width: 3, radius: 5 },
+    large: { lines: 10, length: 8, width: 4, radius: 8 }
+  }
+
+}));
+
+// Jetpack Presets Overrides:
+(function($){
+	$.fn.spin.presets.wp = { trail: 60, speed: 1.3 };
+	$.fn.spin.presets.small  = $.extend( { lines:  8, length: 2, width: 2, radius: 3 }, $.fn.spin.presets.wp );
+	$.fn.spin.presets.medium = $.extend( { lines:  8, length: 4, width: 3, radius: 5 }, $.fn.spin.presets.wp );
+	$.fn.spin.presets.large  = $.extend( { lines: 10, length: 6, width: 4, radius: 7 }, $.fn.spin.presets.wp );
+	$.fn.spin.presets['small-left']   = $.extend( { left:  5 }, $.fn.spin.presets.small );
+	$.fn.spin.presets['small-right']  = $.extend( { right: 5 }, $.fn.spin.presets.small );
+	$.fn.spin.presets['medium-left']  = $.extend( { left:  5 }, $.fn.spin.presets.medium );
+	$.fn.spin.presets['medium-right'] = $.extend( { right: 5 }, $.fn.spin.presets.medium );
+	$.fn.spin.presets['large-left']   = $.extend( { left:  5 }, $.fn.spin.presets.large );
+	$.fn.spin.presets['large-right']  = $.extend( { right: 5 }, $.fn.spin.presets.large );
+})(jQuery);
+;
+/*
+Copyright 2012 Igor Vaynberg
+ 
+Version: 3.1 Timestamp: Tue Aug 14 09:05:17 PDT 2012
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this work except in
+compliance with the License. You may obtain a copy of the License in the LICENSE file, or at:
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is
+distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and limitations under the License.
+*/
+(function(e){"undefined"==typeof e.fn.each2&&e.fn.extend({each2:function(g){for(var n=e([0]),h=-1,m=this.length;++h<m&&(n.context=n[0]=this[h])&&!1!==g.call(n[0],h,n););return this}})})(jQuery);
+(function(e,g){function n(a){return a&&"string"===typeof a?a.replace(/&/g,"&amp;"):a}function h(a,b){var c=0,d=b.length,i;if("undefined"===typeof a)return-1;if(a.constructor===String)for(;c<d;c+=1){if(0===a.localeCompare(b[c]))return c}else for(;c<d;c+=1)if(i=b[c],i.constructor===String){if(0===i.localeCompare(a))return c}else if(i===a)return c;return-1}function m(a,b){return a===b?!0:a===g||b===g||null===a||null===b?!1:a.constructor===String?0===a.localeCompare(b):b.constructor===String?0===b.localeCompare(a):
+!1}function z(a,b){var c,d,i;if(null===a||1>a.length)return[];c=a.split(b);d=0;for(i=c.length;d<i;d+=1)c[d]=e.trim(c[d]);return c}function A(a,b){var c;return function(){window.clearTimeout(c);c=window.setTimeout(b,a)}}function k(a){a.preventDefault();a.stopPropagation()}function B(a,b,c){var d=a.toUpperCase().indexOf(b.toUpperCase()),b=b.length;0>d?c.push(a):(c.push(a.substring(0,d)),c.push("<span class='select2-match'>"),c.push(a.substring(d,d+b)),c.push("</span>"),c.push(a.substring(d+b,a.length)))}
+function C(a){var b,c=0,d=null,i=a.quietMillis||100;return function(j){window.clearTimeout(b);b=window.setTimeout(function(){var b=c+=1,i=a.data,f=a.transport||e.ajax,g=a.traditional||!1,I=a.type||"GET",i=i.call(this,j.term,j.page,j.context);null!==d&&d.abort();d=f.call(null,{url:a.url,dataType:a.dataType,data:i,type:I,traditional:g,success:function(d){b<c||(d=a.results(d,j.page),j.callback(d))}})},i)}}function D(a){var b=a,c,d=function(a){return""+a.text};e.isArray(b)||(d=b.text,e.isFunction(d)||
+(c=b.text,d=function(a){return a[c]}),b=b.results);return function(a){var c=a.term,f={};if(c==="")a.callback({results:b});else{f.results=e(b).filter(function(){return a.matcher(c,d(this))}).get();a.callback(f)}}}function E(a){return e.isFunction(a)?a:function(b){var c=b.term,d={results:[]};e(a).each(function(){var a=this.text!==g,e=a?this.text:this;if(""===c||b.matcher(c,e))d.results.push(a?this:{id:this,text:this})});b.callback(d)}}function t(a){if(e.isFunction(a))return!0;if(!a)return!1;throw Error("formatterName must be a function or a falsy value");
+}function u(a){return e.isFunction(a)?a():a}function F(a){var b=0;e.each(a,function(a,d){d.children?b+=F(d.children):b++});return b}function J(a,b,c,d){var i=a,e=!1,f,r,o,l;if(!d.createSearchChoice||!d.tokenSeparators||1>d.tokenSeparators.length)return g;for(;;){e=-1;r=0;for(o=d.tokenSeparators.length;r<o&&!(l=d.tokenSeparators[r],e=a.indexOf(l),0<=e);r++);if(0>e)break;f=a.substring(0,e);a=a.substring(e+l.length);if(0<f.length&&(f=d.createSearchChoice(f,b),f!==g&&null!==f&&d.id(f)!==g&&null!==d.id(f))){e=
+!1;r=0;for(o=b.length;r<o;r++)if(m(d.id(f),d.id(b[r]))){e=!0;break}e||c(f)}}if(0!=i.localeCompare(a))return a}function w(a,b){var c=function(){};c.prototype=new a;c.prototype.constructor=c;c.prototype.parent=a.prototype;c.prototype=e.extend(c.prototype,b);return c}if(window.Select2===g){var f,v,x,y,G,q;f={TAB:9,ENTER:13,ESC:27,SPACE:32,LEFT:37,UP:38,RIGHT:39,DOWN:40,SHIFT:16,CTRL:17,ALT:18,PAGE_UP:33,PAGE_DOWN:34,HOME:36,END:35,BACKSPACE:8,DELETE:46,isArrow:function(a){a=a.which?a.which:a;switch(a){case f.LEFT:case f.RIGHT:case f.UP:case f.DOWN:return!0}return!1},
+isControl:function(a){switch(a.which){case f.SHIFT:case f.CTRL:case f.ALT:return!0}return a.metaKey?!0:!1},isFunctionKey:function(a){a=a.which?a.which:a;return 112<=a&&123>=a}};var K=1;G=function(){return K++};e(document).delegate("*","mousemove",function(a){e.data(document,"select2-lastpos",{x:a.pageX,y:a.pageY})});e(document).ready(function(){e(document).delegate("*","mousedown touchend",function(a){var b=e(a.target).closest("div.select2-container").get(0),c;b?e(document).find("div.select2-container-active").each(function(){this!==
+b&&e(this).data("select2").blur()}):(b=e(a.target).closest("div.select2-drop").get(0),e(document).find("div.select2-drop-active").each(function(){this!==b&&e(this).data("select2").blur()}));b=e(a.target);c=b.attr("for");"LABEL"===a.target.tagName&&(c&&0<c.length)&&(b=e("#"+c),b=b.data("select2"),b!==g&&(b.focus(),a.preventDefault()))})});v=w(Object,{bind:function(a){var b=this;return function(){a.apply(b,arguments)}},init:function(a){var b,c;this.opts=a=this.prepareOpts(a);this.id=a.id;a.element.data("select2")!==
+g&&null!==a.element.data("select2")&&this.destroy();this.enabled=!0;this.container=this.createContainer();this.containerId="s2id"+G();this.container.attr("id",this.containerId);var d=!1,i;this.body=function(){!1===d&&(i=a.element.closest("body"),d=!0);return i};a.element.attr("class")!==g&&this.container.addClass(a.element.attr("class"));this.container.css(u(a.containerCss));this.container.addClass(u(a.containerCssClass));this.opts.element.data("select2",this).hide().before(this.container);this.container.data("select2",
+this);this.dropdown=this.container.find(".select2-drop");this.dropdown.addClass(u(a.dropdownCssClass));this.dropdown.data("select2",this);this.results=b=this.container.find(".select2-results");this.search=c=this.container.find("input.select2-input");c.attr("tabIndex",this.opts.element.attr("tabIndex"));this.resultsPage=0;this.context=null;this.initContainer();this.initContainerWidth();this.results.bind("mousemove",function(a){var b=e.data(document,"select2-lastpos");(b===g||b.x!==a.pageX||b.y!==a.pageY)&&
+e(a.target).trigger("mousemove-filtered",a)});this.dropdown.delegate(".select2-results","mousemove-filtered",this.bind(this.highlightUnderEvent));var f=this.results,H=A(80,function(a){f.trigger("scroll-debounced",a)});f.bind("scroll",function(a){0<=h(a.target,f.get())&&H(a)});this.dropdown.delegate(".select2-results","scroll-debounced",this.bind(this.loadMoreIfNeeded));e.fn.mousewheel&&b.mousewheel(function(a,c,d,e){c=b.scrollTop();0<e&&0>=c-e?(b.scrollTop(0),k(a)):0>e&&b.get(0).scrollHeight-b.scrollTop()+
+e<=b.height()&&(b.scrollTop(b.get(0).scrollHeight-b.height()),k(a))});c.bind("keydown",function(){e.data(c,"keyup-change-value")===g&&e.data(c,"keyup-change-value",c.val())});c.bind("keyup",function(){var a=e.data(c,"keyup-change-value");a!==g&&c.val()!==a&&(e.removeData(c,"keyup-change-value"),c.trigger("keyup-change"))});c.bind("keyup-change",this.bind(this.updateResults));c.bind("focus",function(){c.addClass("select2-focused");" "===c.val()&&c.val("")});c.bind("blur",function(){c.removeClass("select2-focused")});
+this.dropdown.delegate(".select2-results","mouseup",this.bind(function(a){0<e(a.target).closest(".select2-result-selectable:not(.select2-disabled)").length?(this.highlightUnderEvent(a),this.selectHighlighted(a)):this.focusSearch();k(a)}));this.dropdown.bind("click mouseup mousedown",function(a){a.stopPropagation()});e.isFunction(this.opts.initSelection)&&(this.initSelection(),this.monitorSource());(a.element.is(":disabled")||a.element.is("[readonly='readonly']"))&&this.disable()},destroy:function(){var a=
+this.opts.element.data("select2");a!==g&&(a.container.remove(),a.dropdown.remove(),a.opts.element.removeData("select2").unbind(".select2").show())},prepareOpts:function(a){var b,c,d;b=a.element;"select"===b.get(0).tagName.toLowerCase()&&(this.select=c=a.element);c&&e.each("id multiple ajax query createSearchChoice initSelection data tags".split(" "),function(){if(this in a)throw Error("Option '"+this+"' is not allowed for Select2 when attached to a <select> element.");});a=e.extend({},{populateResults:function(b,
+c,d){var f,o=this.opts.id,l=this;f=function(b,c,i){var j,k,h,m,s,p,q;j=0;for(k=b.length;j<k;j=j+1){h=b[j];m=o(h)!==g;s="children"in h&&h.children.length>0;p=e("<li></li>");p.addClass("select2-results-dept-"+i);p.addClass("select2-result");p.addClass(m?"select2-result-selectable":"select2-result-unselectable");s&&p.addClass("select2-result-with-children");p.addClass(l.opts.formatResultCssClass(h));m=e("<div></div>");m.addClass("select2-result-label");q=a.formatResult(h,m,d);q!==g&&m.html(n(q));p.append(m);
+if(s){s=e("<ul></ul>");s.addClass("select2-result-sub");f(h.children,s,i+1);p.append(s)}p.data("select2-data",h);c.append(p)}};f(c,b,0)}},e.fn.select2.defaults,a);"function"!==typeof a.id&&(d=a.id,a.id=function(a){return a[d]});if(c)a.query=this.bind(function(a){var c={results:[],more:false},d=a.term,f,o,l;l=function(b,c){var e;if(b.is("option"))a.matcher(d,b.text(),b)&&c.push({id:b.attr("value"),text:b.text(),element:b.get(),css:b.attr("class")});else if(b.is("optgroup")){e={text:b.attr("label"),
+children:[],element:b.get(),css:b.attr("class")};b.children().each2(function(a,b){l(b,e.children)});e.children.length>0&&c.push(e)}};f=b.children();if(this.getPlaceholder()!==g&&f.length>0){o=f[0];e(o).text()===""&&(f=f.not(o))}f.each2(function(a,b){l(b,c.results)});a.callback(c)}),a.id=function(a){return a.id},a.formatResultCssClass=function(a){return a.css};else if(!("query"in a))if("ajax"in a){if((c=a.element.data("ajax-url"))&&0<c.length)a.ajax.url=c;a.query=C(a.ajax)}else"data"in a?a.query=D(a.data):
+"tags"in a&&(a.query=E(a.tags),a.createSearchChoice=function(a){return{id:a,text:a}},a.initSelection=function(b,c){var d=[];e(z(b.val(),a.separator)).each(function(){var b=this,c=this,i=a.tags;e.isFunction(i)&&(i=i());e(i).each(function(){if(m(this.id,b)){c=this.text;return false}});d.push({id:b,text:c})});c(d)});if("function"!==typeof a.query)throw"query function not defined for Select2 "+a.element.attr("id");return a},monitorSource:function(){this.opts.element.bind("change.select2",this.bind(function(){!0!==
+this.opts.element.data("select2-change-triggered")&&this.initSelection()}))},triggerChange:function(a){a=a||{};a=e.extend({},a,{type:"change",val:this.val()});this.opts.element.data("select2-change-triggered",!0);this.opts.element.trigger(a);this.opts.element.data("select2-change-triggered",!1);this.opts.element.click()},enable:function(){this.enabled||(this.enabled=!0,this.container.removeClass("select2-container-disabled"))},disable:function(){this.enabled&&(this.close(),this.enabled=!1,this.container.addClass("select2-container-disabled"))},
+opened:function(){return this.container.hasClass("select2-dropdown-open")},positionDropdown:function(){var a=this.container.offset(),b=this.container.outerHeight(),c=this.container.outerWidth(),d=this.dropdown.outerHeight(),i=e(window).scrollTop()+document.documentElement.clientHeight,b=a.top+b,i=b+d<=i,f=a.top-d>=this.body().scrollTop(),g;this.dropdown.hasClass("select2-drop-above")?(g=!0,!f&&i&&(g=!1)):(g=!1,!i&&f&&(g=!0));g?(b=a.top-d,this.container.addClass("select2-drop-above"),this.dropdown.addClass("select2-drop-above")):
+(this.container.removeClass("select2-drop-above"),this.dropdown.removeClass("select2-drop-above"));this.dropdown.css({top:b,left:a.left,width:c})},shouldOpen:function(){var a;if(this.opened())return!1;a=jQuery.Event("open");this.opts.element.trigger(a);return!a.isDefaultPrevented()},clearDropdownAlignmentPreference:function(){this.container.removeClass("select2-drop-above");this.dropdown.removeClass("select2-drop-above")},open:function(){if(!this.shouldOpen())return!1;window.setTimeout(this.bind(this.opening),
+1);return!0},opening:function(){var a=this.containerId,b="#"+a,c="scroll."+a,d="resize."+a;this.container.parents().each(function(){e(this).bind(c,function(){var a=e(b);0==a.length&&e(this).unbind(c);a.select2("close")})});e(window).bind(d,function(){var a=e(b);0==a.length&&e(window).unbind(d);a.select2("close")});this.clearDropdownAlignmentPreference();" "===this.search.val()&&this.search.val("");this.dropdown.css(u(this.opts.dropdownCss));this.dropdown.addClass("select2-drop-active");this.container.addClass("select2-dropdown-open").addClass("select2-container-active");
+this.updateResults(!0);this.dropdown[0]!==this.body().children().last()[0]&&this.dropdown.detach().appendTo(this.body());this.dropdown.show();this.ensureHighlightVisible();this.positionDropdown();this.focusSearch()},close:function(){if(this.opened()){var a=this;this.container.parents().each(function(){e(this).unbind("scroll."+a.containerId)});e(window).unbind("resize."+this.containerId);this.clearDropdownAlignmentPreference();this.dropdown.hide();this.container.removeClass("select2-dropdown-open").removeClass("select2-container-active");
+this.results.empty();this.clearSearch();this.opts.element.trigger(jQuery.Event("close"))}},clearSearch:function(){},ensureHighlightVisible:function(){var a=this.results,b,c,d,f;c=this.highlight();0>c||(0==c?a.scrollTop(0):(b=a.find(".select2-result-selectable"),d=e(b[c]),f=d.offset().top+d.outerHeight(),c===b.length-1&&(b=a.find("li.select2-more-results"),0<b.length&&(f=b.offset().top+b.outerHeight())),b=a.offset().top+a.outerHeight(),f>b&&a.scrollTop(a.scrollTop()+(f-b)),d=d.offset().top-a.offset().top,
+0>d&&a.scrollTop(a.scrollTop()+d)))},moveHighlight:function(a){for(var b=this.results.find(".select2-result-selectable"),c=this.highlight();-1<c&&c<b.length;){var c=c+a,d=e(b[c]);if(d.hasClass("select2-result-selectable")&&!d.hasClass("select2-disabled")){this.highlight(c);break}}},highlight:function(a){var b=this.results.find(".select2-result-selectable").not(".select2-disabled");if(0===arguments.length)return h(b.filter(".select2-highlighted")[0],b.get());a>=b.length&&(a=b.length-1);0>a&&(a=0);
+b.removeClass("select2-highlighted");e(b[a]).addClass("select2-highlighted");this.ensureHighlightVisible()},countSelectableResults:function(){return this.results.find(".select2-result-selectable").not(".select2-disabled").length},highlightUnderEvent:function(a){a=e(a.target).closest(".select2-result-selectable");if(0<a.length&&!a.is(".select2-highlighted")){var b=this.results.find(".select2-result-selectable");this.highlight(b.index(a))}else 0==a.length&&this.results.find(".select2-highlighted").removeClass("select2-highlighted")},
+loadMoreIfNeeded:function(){var a=this.results,b=a.find("li.select2-more-results"),c,d=this.resultsPage+1,e=this,f=this.search.val(),g=this.context;0!==b.length&&(c=b.offset().top-a.offset().top-a.height(),0>=c&&(b.addClass("select2-active"),this.opts.query({term:f,page:d,context:g,matcher:this.opts.matcher,callback:this.bind(function(c){e.opts.populateResults.call(this,a,c.results,{term:f,page:d,context:g});!0===c.more?(b.detach().appendTo(a).text(e.opts.formatLoadMore(d+1)),window.setTimeout(function(){e.loadMoreIfNeeded()},
+10)):b.remove();e.positionDropdown();e.resultsPage=d})})))},tokenize:function(){},updateResults:function(a){function b(){f.scrollTop(0);d.removeClass("select2-active");k.positionDropdown()}function c(a){f.html(n(a));b()}var d=this.search,f=this.results,j=this.opts,h,k=this;if(!(!0!==a&&(!1===this.showSearchInput||!this.opened()))){d.addClass("select2-active");if(1<=j.maximumSelectionSize&&(h=this.data(),e.isArray(h)&&h.length>=j.maximumSelectionSize&&t(j.formatSelectionTooBig,"formatSelectionTooBig"))){c("<li class='select2-selection-limit'>"+
+j.formatSelectionTooBig(j.maximumSelectionSize)+"</li>");return}d.val().length<j.minimumInputLength&&t(j.formatInputTooShort,"formatInputTooShort")?c("<li class='select2-no-results'>"+j.formatInputTooShort(d.val(),j.minimumInputLength)+"</li>"):(c("<li class='select2-searching'>"+j.formatSearching()+"</li>"),h=this.tokenize(),h!=g&&null!=h&&d.val(h),this.resultsPage=1,j.query({term:d.val(),page:this.resultsPage,context:null,matcher:j.matcher,callback:this.bind(function(h){var l;this.context=h.context===
+g?null:h.context;this.opts.createSearchChoice&&""!==d.val()&&(l=this.opts.createSearchChoice.call(null,d.val(),h.results),l!==g&&null!==l&&k.id(l)!==g&&null!==k.id(l)&&0===e(h.results).filter(function(){return m(k.id(this),k.id(l))}).length&&h.results.unshift(l));0===h.results.length&&t(j.formatNoMatches,"formatNoMatches")?c("<li class='select2-no-results'>"+j.formatNoMatches(d.val())+"</li>"):(f.empty(),k.opts.populateResults.call(this,f,h.results,{term:d.val(),page:this.resultsPage,context:null}),
+!0===h.more&&t(j.formatLoadMore,"formatLoadMore")&&(f.append("<li class='select2-more-results'>"+n(j.formatLoadMore(this.resultsPage))+"</li>"),window.setTimeout(function(){k.loadMoreIfNeeded()},10)),this.postprocessResults(h,a),b())})}))}},cancel:function(){this.close()},blur:function(){this.close();this.container.removeClass("select2-container-active");this.dropdown.removeClass("select2-drop-active");this.search[0]===document.activeElement&&this.search.blur();this.clearSearch();this.selection.find(".select2-search-choice-focus").removeClass("select2-search-choice-focus")},
+focusSearch:function(){window.setTimeout(this.bind(function(){this.search.focus();this.search.val(this.search.val())}),10)},selectHighlighted:function(){var a=this.highlight(),b=this.results.find(".select2-highlighted").not(".select2-disabled"),c=b.closest(".select2-result-selectable").data("select2-data");c&&(b.addClass("select2-disabled"),this.highlight(a),this.onSelect(c))},getPlaceholder:function(){return this.opts.element.attr("placeholder")||this.opts.element.attr("data-placeholder")||this.opts.element.data("placeholder")||
+this.opts.placeholder},initContainerWidth:function(){var a=function(){var a,c,d,f;if("off"===this.opts.width)return null;if("element"===this.opts.width)return 0===this.opts.element.outerWidth()?"auto":this.opts.element.outerWidth()+"px";if("copy"===this.opts.width||"resolve"===this.opts.width){a=this.opts.element.attr("style");if(a!==g){a=a.split(";");d=0;for(f=a.length;d<f;d+=1)if(c=a[d].replace(/\s/g,"").match(/width:(([-+]?([0-9]*\.)?[0-9]+)(px|em|ex|%|in|cm|mm|pt|pc))/),null!==c&&1<=c.length)return c[1]}return"resolve"===
+this.opts.width?(a=this.opts.element.css("width"),0<a.indexOf("%")?a:0===this.opts.element.outerWidth()?"auto":this.opts.element.outerWidth()+"px"):null}return e.isFunction(this.opts.width)?this.opts.width():this.opts.width}.call(this);null!==a&&this.container.attr("style","width: "+a)}});x=w(v,{createContainer:function(){return e("<div></div>",{"class":"select2-container"}).html("    <a href='javascript:void(0)' class='select2-choice'>   <span></span><abbr class='select2-search-choice-close' style='display:none;'></abbr>   <div><b></b></div></a>    <div class='select2-drop select2-offscreen'>   <div class='select2-search'>       <input type='text' autocomplete='off' class='select2-input'/>   </div>   <ul class='select2-results'>   </ul></div>")},
+opening:function(){this.search.show();this.parent.opening.apply(this,arguments);this.dropdown.removeClass("select2-offscreen")},close:function(){this.opened()&&(this.parent.close.apply(this,arguments),this.dropdown.removeAttr("style").addClass("select2-offscreen").insertAfter(this.selection).show())},focus:function(){this.close();this.selection.focus()},isFocused:function(){return this.selection[0]===document.activeElement},cancel:function(){this.parent.cancel.apply(this,arguments);this.selection.focus()},
+initContainer:function(){var a,b=this.dropdown;this.selection=a=this.container.find(".select2-choice");this.search.bind("keydown",this.bind(function(a){if(this.enabled)if(a.which===f.PAGE_UP||a.which===f.PAGE_DOWN)k(a);else if(this.opened())switch(a.which){case f.UP:case f.DOWN:this.moveHighlight(a.which===f.UP?-1:1);k(a);break;case f.TAB:case f.ENTER:this.selectHighlighted();k(a);break;case f.ESC:this.cancel(a),k(a)}else a.which===f.TAB||f.isControl(a)||f.isFunctionKey(a)||a.which===f.ESC||!1===
+this.opts.openOnEnter&&a.which===f.ENTER||this.open()}));this.search.bind("focus",this.bind(function(){this.selection.attr("tabIndex","-1")}));this.search.bind("blur",this.bind(function(){this.opened()||this.container.removeClass("select2-container-active");window.setTimeout(this.bind(function(){this.selection.attr("tabIndex",this.opts.element.attr("tabIndex"))}),10)}));a.bind("mousedown",this.bind(function(){this.opened()?(this.close(),this.selection.focus()):this.enabled&&this.open()}));b.bind("mousedown",
+this.bind(function(){this.search.focus()}));a.bind("focus",this.bind(function(){this.container.addClass("select2-container-active");this.search.attr("tabIndex","-1")}));a.bind("blur",this.bind(function(){this.opened()||this.container.removeClass("select2-container-active");window.setTimeout(this.bind(function(){this.search.attr("tabIndex",this.opts.element.attr("tabIndex"))}),10)}));a.bind("keydown",this.bind(function(a){if(this.enabled)if(a.which===f.PAGE_UP||a.which===f.PAGE_DOWN)k(a);else if(!(a.which===
+f.TAB||f.isControl(a)||f.isFunctionKey(a)||a.which===f.ESC)&&!(!1===this.opts.openOnEnter&&a.which===f.ENTER))if(a.which==f.DELETE)this.opts.allowClear&&this.clear();else{this.open();if(a.which!==f.ENTER&&!(48>a.which)){var b=String.fromCharCode(a.which).toLowerCase();a.shiftKey&&(b=b.toUpperCase());this.search.focus();this.search.val(b)}k(a)}}));a.delegate("abbr","mousedown",this.bind(function(a){this.enabled&&(this.clear(),k(a),this.close(),this.triggerChange(),this.selection.focus())}));this.setPlaceholder();
+this.search.bind("focus",this.bind(function(){this.container.addClass("select2-container-active")}))},clear:function(){this.opts.element.val("");this.selection.find("span").empty();this.selection.removeData("select2-data");this.setPlaceholder()},initSelection:function(){if(""===this.opts.element.val())this.close(),this.setPlaceholder();else{var a=this;this.opts.initSelection.call(null,this.opts.element,function(b){b!==g&&null!==b&&(a.updateSelection(b),a.close(),a.setPlaceholder())})}},prepareOpts:function(){var a=
+this.parent.prepareOpts.apply(this,arguments);"select"===a.element.get(0).tagName.toLowerCase()&&(a.initSelection=function(a,c){var d=a.find(":selected");e.isFunction(c)&&c({id:d.attr("value"),text:d.text()})});return a},setPlaceholder:function(){var a=this.getPlaceholder();""===this.opts.element.val()&&a!==g&&!(this.select&&""!==this.select.find("option:first").text())&&(this.selection.find("span").html(n(a)),this.selection.addClass("select2-default"),this.selection.find("abbr").hide())},postprocessResults:function(a,
+b){var c=0,d=this,f=!0;this.results.find(".select2-result-selectable").each2(function(a,b){if(m(d.id(b.data("select2-data")),d.opts.element.val()))return c=a,!1});this.highlight(c);!0===b&&(f=this.showSearchInput=F(a.results)>=this.opts.minimumResultsForSearch,this.dropdown.find(".select2-search")[f?"removeClass":"addClass"]("select2-search-hidden"),e(this.dropdown,this.container)[f?"addClass":"removeClass"]("select2-with-searchbox"))},onSelect:function(a){var b=this.opts.element.val();this.opts.element.val(this.id(a));
+this.updateSelection(a);this.close();this.selection.focus();m(b,this.id(a))||this.triggerChange()},updateSelection:function(a){var b=this.selection.find("span");this.selection.data("select2-data",a);b.empty();a=this.opts.formatSelection(a,b);a!==g&&b.append(n(a));this.selection.removeClass("select2-default");this.opts.allowClear&&this.getPlaceholder()!==g&&this.selection.find("abbr").show()},val:function(){var a,b=null,c=this;if(0===arguments.length)return this.opts.element.val();a=arguments[0];if(this.select)this.select.val(a).find(":selected").each2(function(a,
+c){b={id:c.attr("value"),text:c.text()};return!1}),this.updateSelection(b),this.setPlaceholder();else{if(this.opts.initSelection===g)throw Error("cannot call val() if initSelection() is not defined");a?this.opts.initSelection(this.opts.element,function(a){c.opts.element.val(!a?"":c.id(a));c.updateSelection(a);c.setPlaceholder()}):this.clear()}},clearSearch:function(){this.search.val("")},data:function(a){var b;if(0===arguments.length)return b=this.selection.data("select2-data"),b==g&&(b=null),b;!a||
+""===a?this.clear():(this.opts.element.val(!a?"":this.id(a)),this.updateSelection(a))}});y=w(v,{createContainer:function(){return e("<div></div>",{"class":"select2-container select2-container-multi"}).html("    <ul class='select2-choices'>  <li class='select2-search-field'>    <input type='text' autocomplete='off' class='select2-input'>  </li></ul><div class='select2-drop select2-drop-multi' style='display:none;'>   <ul class='select2-results'>   </ul></div>")},prepareOpts:function(){var a=this.parent.prepareOpts.apply(this,
+arguments);"select"===a.element.get(0).tagName.toLowerCase()&&(a.initSelection=function(a,c){var d=[];a.find(":selected").each2(function(a,b){d.push({id:b.attr("value"),text:b.text()})});e.isFunction(c)&&c(d)});return a},initContainer:function(){var a;this.searchContainer=this.container.find(".select2-search-field");this.selection=a=this.container.find(".select2-choices");this.search.bind("keydown",this.bind(function(b){if(this.enabled){if(b.which===f.BACKSPACE&&""===this.search.val()){this.close();
+var c;c=a.find(".select2-search-choice-focus");if(0<c.length){this.unselect(c.first());this.search.width(10);k(b);return}c=a.find(".select2-search-choice");0<c.length&&c.last().addClass("select2-search-choice-focus")}else a.find(".select2-search-choice-focus").removeClass("select2-search-choice-focus");if(this.opened())switch(b.which){case f.UP:case f.DOWN:this.moveHighlight(b.which===f.UP?-1:1);k(b);return;case f.ENTER:case f.TAB:this.selectHighlighted();k(b);return;case f.ESC:this.cancel(b);k(b);
+return}if(!(b.which===f.TAB||f.isControl(b)||f.isFunctionKey(b)||b.which===f.BACKSPACE||b.which===f.ESC)&&!(!1===this.opts.openOnEnter&&b.which===f.ENTER))this.open(),(b.which===f.PAGE_UP||b.which===f.PAGE_DOWN)&&k(b)}}));this.search.bind("keyup",this.bind(this.resizeSearch));this.search.bind("blur",this.bind(function(){this.container.removeClass("select2-container-active")}));this.container.delegate(".select2-choices","mousedown",this.bind(function(a){this.enabled&&(this.clearPlaceholder(),this.open(),
+this.focusSearch(),a.preventDefault())}));this.container.delegate(".select2-choices","focus",this.bind(function(){this.enabled&&(this.container.addClass("select2-container-active"),this.dropdown.addClass("select2-drop-active"),this.clearPlaceholder())}));this.clearSearch()},enable:function(){this.enabled||(this.parent.enable.apply(this,arguments),this.search.removeAttr("disabled"))},disable:function(){this.enabled&&(this.parent.disable.apply(this,arguments),this.search.attr("disabled",!0))},initSelection:function(){""===
+this.opts.element.val()&&(this.updateSelection([]),this.close(),this.clearSearch());if(this.select||""!==this.opts.element.val()){var a=this;this.opts.initSelection.call(null,this.opts.element,function(b){if(b!==g&&b!==null){a.updateSelection(b);a.close();a.clearSearch()}})}},clearSearch:function(){var a=this.getPlaceholder();a!==g&&0===this.getVal().length&&!1===this.search.hasClass("select2-focused")?(this.search.val(a).addClass("select2-default"),this.resizeSearch()):this.search.val(" ").width(10)},
+clearPlaceholder:function(){this.search.hasClass("select2-default")?this.search.val("").removeClass("select2-default"):" "===this.search.val()&&this.search.val("")},opening:function(){this.parent.opening.apply(this,arguments);this.clearPlaceholder();this.resizeSearch();this.focusSearch()},close:function(){this.opened()&&this.parent.close.apply(this,arguments)},focus:function(){this.close();this.search.focus()},isFocused:function(){return this.search.hasClass("select2-focused")},updateSelection:function(a){var b=
+[],c=[],d=this;e(a).each(function(){0>h(d.id(this),b)&&(b.push(d.id(this)),c.push(this))});a=c;this.selection.find(".select2-search-choice").remove();e(a).each(function(){d.addSelectedChoice(this)});d.postprocessResults()},tokenize:function(){var a=this.search.val(),a=this.opts.tokenizer(a,this.data(),this.bind(this.onSelect),this.opts);null!=a&&a!=g&&(this.search.val(a),0<a.length&&this.open())},onSelect:function(a){this.addSelectedChoice(a);this.select&&this.postprocessResults();this.opts.closeOnSelect?
+(this.close(),this.search.width(10)):0<this.countSelectableResults()?(this.search.width(10),this.resizeSearch(),this.positionDropdown()):this.close();this.triggerChange({added:a});this.focusSearch()},cancel:function(){this.close();this.focusSearch()},addSelectedChoice:function(a){var b=e("<li class='select2-search-choice'>    <div></div>    <a href='javascript:void(0)' class='select2-search-choice-close' tabindex='-1'></a></li>"),c=this.id(a),d=this.getVal(),f;f=this.opts.formatSelection(a,b);b.find("div").replaceWith("<div>"+
+n(f)+"</div>");b.find(".select2-search-choice-close").bind("mousedown",k).bind("click dblclick",this.bind(function(a){this.enabled&&(e(a.target).closest(".select2-search-choice").fadeOut("fast").animate({width:"hide"},50,this.bind(function(){this.unselect(e(a.target));this.selection.find(".select2-search-choice-focus").removeClass("select2-search-choice-focus");this.close();this.focusSearch()})).dequeue(),k(a))})).bind("focus",this.bind(function(){this.enabled&&(this.container.addClass("select2-container-active"),
+this.dropdown.addClass("select2-drop-active"))}));b.data("select2-data",a);b.insertBefore(this.searchContainer);d.push(c);this.setVal(d)},unselect:function(a){var b=this.getVal(),c,d,a=a.closest(".select2-search-choice");if(0===a.length)throw"Invalid argument: "+a+". Must be .select2-search-choice";c=a.data("select2-data");d=h(this.id(c),b);0<=d&&(b.splice(d,1),this.setVal(b),this.select&&this.postprocessResults());a.remove();this.triggerChange({removed:c})},postprocessResults:function(){var a=this.getVal(),
+b=this.results.find(".select2-result-selectable"),c=this.results.find(".select2-result-with-children"),d=this;b.each2(function(b,c){var e=d.id(c.data("select2-data"));0<=h(e,a)?c.addClass("select2-disabled").removeClass("select2-result-selectable"):c.removeClass("select2-disabled").addClass("select2-result-selectable")});c.each2(function(a,b){0==b.find(".select2-result-selectable").length?b.addClass("select2-disabled"):b.removeClass("select2-disabled")});b.each2(function(a,b){if(!b.hasClass("select2-disabled")&&
+b.hasClass("select2-result-selectable"))return d.highlight(0),!1})},resizeSearch:function(){var a,b,c,d,f=this.search.outerWidth()-this.search.width();a=this.search;q||(c=a[0].currentStyle||window.getComputedStyle(a[0],null),q=e("<div></div>").css({position:"absolute",left:"-10000px",top:"-10000px",display:"none",fontSize:c.fontSize,fontFamily:c.fontFamily,fontStyle:c.fontStyle,fontWeight:c.fontWeight,letterSpacing:c.letterSpacing,textTransform:c.textTransform,whiteSpace:"nowrap"}),e("body").append(q));
+q.text(a.val());a=q.width()+10;b=this.search.offset().left;c=this.selection.width();d=this.selection.offset().left;b=c-(b-d)-f;b<a&&(b=c-f);40>b&&(b=c-f);this.search.width(b)},getVal:function(){var a;if(this.select)return a=this.select.val(),null===a?[]:a;a=this.opts.element.val();return z(a,this.opts.separator)},setVal:function(a){var b;this.select?this.select.val(a):(b=[],e(a).each(function(){0>h(this,b)&&b.push(this)}),this.opts.element.val(0===b.length?"":b.join(this.opts.separator)))},val:function(){var a,
+b=[],c=this;if(0===arguments.length)return this.getVal();if(a=arguments[0])if(this.setVal(a),this.select)this.select.find(":selected").each(function(){b.push({id:e(this).attr("value"),text:e(this).text()})}),this.updateSelection(b);else{if(this.opts.initSelection===g)throw Error("val() cannot be called if initSelection() is not defined");this.opts.initSelection(this.opts.element,function(a){var b=e(a).map(c.id);c.setVal(b);c.updateSelection(a);c.clearSearch()})}else this.opts.element.val(""),this.updateSelection([]);
+this.clearSearch()},onSortStart:function(){if(this.select)throw Error("Sorting of elements is not supported when attached to <select>. Attach to <input type='hidden'/> instead.");this.search.width(0);this.searchContainer.hide()},onSortEnd:function(){var a=[],b=this;this.searchContainer.show();this.searchContainer.appendTo(this.searchContainer.parent());this.resizeSearch();this.selection.find(".select2-search-choice").each(function(){a.push(b.opts.id(e(this).data("select2-data")))});this.setVal(a);
+this.triggerChange()},data:function(a){var b=this,c;if(0===arguments.length)return this.selection.find(".select2-search-choice").map(function(){return e(this).data("select2-data")}).get();a||(a=[]);c=e.map(a,function(a){return b.opts.id(a)});this.setVal(c);this.updateSelection(a);this.clearSearch()}});e.fn.select2=function(){var a=Array.prototype.slice.call(arguments,0),b,c,d,f,j="val destroy opened open close focus isFocused container onSortStart onSortEnd enable disable positionDropdown data".split(" ");
+this.each(function(){if(0===a.length||"object"===typeof a[0])b=0===a.length?{}:e.extend({},a[0]),b.element=e(this),"select"===b.element.get(0).tagName.toLowerCase()?f=b.element.attr("multiple"):(f=b.multiple||!1,"tags"in b&&(b.multiple=f=!0)),c=f?new y:new x,c.init(b);else if("string"===typeof a[0]){if(0>h(a[0],j))throw"Unknown method: "+a[0];d=g;c=e(this).data("select2");if(c!==g&&(d="container"===a[0]?c.container:c[a[0]].apply(c,a.slice(1)),d!==g))return!1}else throw"Invalid arguments to select2 plugin: "+
+a;});return d===g?this:d};e.fn.select2.defaults={width:"copy",closeOnSelect:!0,openOnEnter:!0,containerCss:{},dropdownCss:{},containerCssClass:"",dropdownCssClass:"",formatResult:function(a,b,c){b=[];B(a.text,c.term,b);return b.join("")},formatSelection:function(a){return a.text},formatResultCssClass:function(){return g},formatNoMatches:function(){return"No matches found"},formatInputTooShort:function(a,b){return"Please enter "+(b-a.length)+" more characters"},formatSelectionTooBig:function(a){return"You can only select "+
+a+" items"},formatLoadMore:function(){return"Loading more results..."},formatSearching:function(){return"Searching..."},minimumResultsForSearch:0,minimumInputLength:0,maximumSelectionSize:0,id:function(a){return a.id},matcher:function(a,b){return 0<=b.toUpperCase().indexOf(a.toUpperCase())},separator:",",tokenSeparators:[],tokenizer:J};window.Select2={query:{ajax:C,local:D,tags:E},util:{debounce:A,markMatch:B},"class":{"abstract":v,single:x,multi:y}}}})(jQuery);
+;
+var communityTagger = {}
+
+communityTagger.init = function() {
+	communityTagger.$selector = jQuery( '.wp-community-tagger select.community-tagger' );
+	if ( communityTagger.$selector.length == 0 )
+		return;
+	if ( typeof( communityTaggerData.input_sel ) != 'undefined' ) {
+		communityTagger.$input = jQuery( communityTaggerData.input_sel );
+	}
+	communityTagger.$selector.select2();
+	communityTagger.setCurrentTags();
+	communityTagger.$suggested = jQuery( '.community-tagger-tags-suggested' );
+
+	communityTagger.$selector.on( "change", function(e) { 
+		if ( e.added ) {
+			communityTagger.addSelectTag( e.added.id );
+			var tag_type = jQuery( e.added.element ).attr( 'data-tag-type' );
+			if ( typeof tag_type != 'undefined' )
+				communityTagger.bumpStat( 'community-tagger-added', tag_type );
+			else
+				communityTagger.bumpStat( 'community-tagger-added', 'new-tag' );
+		}
+
+		if ( e.removed ) {
+			communityTagger.removeSelectTag( e.removed.id );
+		}
+	} );
+	communityTagger.$suggested.children().bind( 'click.communityTagger', communityTagger.addSuggestedTag );
+}
+
+communityTagger.setCurrentTags = function() {
+	if ( typeof( communityTagger.$selector ) == 'undefined' )
+		return;
+	var curr_tags = [];
+	for ( var tag in communityTaggerData.current_tags ) {
+		curr_tags.push( { id: tag, text: tag } );
+	}
+	communityTagger.$selector.select2( 'data', curr_tags );
+}
+
+communityTagger.setHiddenInput = function() {
+	if ( typeof communityTagger.$input == 'undefined' )
+		return;
+	var curr_tags = '';
+	for ( var tag in communityTaggerData.current_tags ) {
+		curr_tags += tag + ',';
+	}
+	communityTagger.$input.val( curr_tags );
+}
+
+communityTagger.addSelectTag = function( name ) {
+	if ( communityTaggerData.ajax_enabled ) {
+		var data = {
+			'action': 'community_tagger_add_tag',
+			'term_name': name
+		}
+
+		// Make ajax call
+		communityTagger.ajax( data, communityTagger.addSelectTagSuccess, communityTagger.setCurrentTags, name );
+	} else {
+		communityTagger.addSelectTagSuccess( { name: name }, name );
+	}
+	communityTagger.setHiddenInput();
+}
+
+communityTagger.addSelectTagSuccess = function( data, name ) {
+	communityTaggerData.current_tags[ data.name ] = true;
+	communityTagger.setCurrentTags();
+}
+
+communityTagger.removeSelectTag = function( name ) {
+	if ( communityTaggerData.ajax_enabled ) {
+		var data = {
+			'action': 'community_tagger_remove_tag',
+			'term_name': name
+		}
+
+		// Make ajax call
+		communityTagger.ajax( data, communityTagger.removeSelectTagSuccess, communityTagger.setCurrentTags, name );
+	} else {
+		communityTagger.removeSelectTagSuccess( null, name );
+	}
+	communityTagger.setHiddenInput();
+}
+
+communityTagger.removeSelectTagSuccess = function( data, name ) {
+	delete communityTaggerData.current_tags[ name ];
+	communityTagger.setCurrentTags();
+}
+
+communityTagger.addSuggestedTag = function( e ) {
+	e.preventDefault();
+
+	var $this = jQuery(this),
+		termName = $this.attr( 'data-term-name' );
+
+	if ( communityTaggerData.ajax_enabled ) {
+		var data = {
+			'action': 'community_tagger_add_tag',
+			'term_name': termName
+		}
+
+		// Make ajax call
+		$this.addClass( 'loading' );
+		communityTagger.ajax( data, communityTagger.addSuggestedTagSuccess, communityTagger.addSuggestedTagFailed, $this );
+	} else {
+		communityTagger.addSuggestedTagSuccess( { name: termName }, $this );
+	}
+	communityTagger.setHiddenInput();
+	communityTagger.bumpStat( 'community-tagger-added', 'suggested-tag' );
+}
+
+communityTagger.addSuggestedTagSuccess = function( data, $elem ) {
+	$elem.removeClass( 'loading' );
+	if( ! $elem.siblings().length )
+		var last = true;
+	
+	// Add new tag to current tags list
+	var $newElem = $elem.clone();
+
+	// Remove from suggested tags list
+	$elem.fadeOut( 'normal', function() { $elem.remove(); } );
+
+	communityTaggerData.current_tags[ data.name ] = true;
+	communityTagger.setCurrentTags();
+
+	if( last )
+		communityTagger.$suggested.remove();
+}
+
+communityTagger.addSuggestedTagFailed = function( data, $elem ) {
+	$elem.removeClass( 'loading' );
+}
+
+communityTagger.ajax = function( data, successCallback, errorCallback, param ) {
+	data._nonce = jQuery( '#community-tagger-tags-nonce' ).val();
+	data.post_id = communityTaggerData.post_id;
+
+	var tagger = jQuery( '.wp-community-tagger div.community-tagger' ).spin( 'small-right' );
+
+	jQuery.ajax( ajaxurl, {
+		data: data,
+		type: 'post',
+		dataType: 'json',
+		success: function( data ) {
+			tagger.spin( false );
+			if( typeof( successCallback ) === 'function' )
+				successCallback( data, param );
+		},
+		error: function( data ) {
+			tagger.spin( false );
+			if( typeof( errorCallback ) === 'function' )
+				errorCallback( data, param );
+		}
+	} );
+
+}
+
+communityTagger.bumpStat = function( group, names ) {
+	new Image().src = document.location.protocol + '//pixel.wp.com/g.gif?v=wpcom-no-pv&x_' +
+		group + '=' + names + '&baba=' + Math.random();
+}
+
+;
+/* global jQuery */
+
+( function( $ ) {
+	$( document ).on( 'click', '.jetpack-copy-post-notice .notice-dismiss', function() {
+        $.post( ajaxurl, { action: 'copy_post_dismiss' } );
+    });
+} )( jQuery );
+;
+jQuery(document).ready(function($){
+	$( '#widget-organizer-selection select' ).on( 'change', function(e) {
+		$( '#widget-venue-selection select' ).val( 'all' );
+	});
+});;
+function fbshow( $toshow ) {
+	jQuery('#quicklookup').load( 'index.php', { faq_questions: $toshow } );
+};
