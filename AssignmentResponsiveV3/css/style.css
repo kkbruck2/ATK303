@@ -1,0 +1,451 @@
+/* Color Theme Swatches in Hex */
+/* .sepia-1-hex { color: #E6DFD6; }
+.sepia-2-hex { color: #CEBEAA; }
+.sepia-3-hex { color: #B1997D; }
+.sepia-4-hex { color: #9B7F5D; }
+.sepia-5-hex { color: #4F391E; } */
+/* Color Theme Swatches in Hex */
+/* .upholstery-1-hex { color: #332B21; }
+.upholstery-2-hex { color: #1E1E1E; }
+.upholstery-3-hex { color: #9B3220; }
+.upholstery-4-hex { color: #46848F; }
+.upholstery-5-hex { color: #441D47; } */
+/* Default Layout (Mobile) */
+body {
+  display: grid;
+  grid-template-columns: 1fr;
+  font-family: 'Roboto Condensed', sans-serif;
+  margin: 0;
+  background-color: #B1997D;
+}
+
+.container {
+  display: grid;
+  margin: 0;
+  background-color: #B1997D;
+  grid-template-rows: auto auto 120px auto auto auto auto;
+  z-index: 1;
+}
+
+header {
+  display: grid;
+  top: 0;
+  left: 0;
+  grid-template-columns: 1fr;
+  position: relative;
+  top: 0;
+  grid-auto-rows: 1 / 3;
+  width: 100%;
+  border-bottom: 3px solid #E6DFD6;
+}
+
+.BUlogo {
+  display: grid;
+  position: relative;
+  top: 0;
+  height: 8em;
+  padding: 0;
+  margin: 1em auto 0 auto;
+  opacity: 1;
+  grid-auto-rows: 1 / 2;
+  z-index: 3;
+}
+
+.tagline {
+  display: grid;
+  position: relative;
+  text-align: center;
+  font-size: 1.5em;
+  grid-auto-rows: 2 / 3;
+  width: 100%;
+  margin: .5em auto;
+  z-index: 3;
+}
+
+.mesh {
+  display: grid;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../img/1x/mesh01.png");
+  opacity: .5;
+  background-clip: border-box;
+  background-repeat: top;
+  background-position: top left;
+  margin: 0 auto;
+  grid-auto-rows: 1 / 3;
+}
+
+h1 {
+  display: grid;
+  font-family: 'Roboto Condensed', sans-serif;
+  font-weight: bold;
+  font-kerning: auto;
+  color: #000;
+  padding-bottom: .5em:
+}
+
+#bkg {
+  position: relative;
+  top: 0;
+}
+
+nav {
+  display: grid;
+  grid-auto-rows: 3 / 4;
+}
+
+.menu {
+  position: relative;
+  display: grid;
+  background-color: #CEBEAA;
+  width: 100%;
+  text-align: center;
+  z-index: 1;
+  border-bottom: 3px solid #E6DFD6;
+}
+
+a {
+  display: grid;
+  font-family: 'Roboto', sans-serif;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 1em;
+  font-weight: bold;
+  padding-top: .5em;
+  padding-bottom: .5em;
+  border-bottom: 1px solid #E6DFD6;
+  width: 100%;
+}
+
+a:link {
+  color: #9B3220;
+}
+
+a:hover {
+  color: #441D47;
+}
+
+a:visited {
+  color: #9B3220;
+}
+
+#content {
+  display: grid;
+  position: relative;
+  top: 0;
+  left: 0;
+  margin: 0;
+  grid-template-columns: 1fr;
+  grid-template-rows: 120px auto;
+}
+
+.trim {
+  display: grid;
+  height: 120px;
+  position: absolute;
+  top: 0;
+  display: grid;
+  opacity: 1;
+  background-image: url("../img/SVG/laceTrim.svg");
+  background-repeat: repeat-x;
+  background-position: left top;
+  z-index: 10;
+  width: 100%;
+  filter: drop-shadow(1px 1px 2px #1E1E1E);
+  grid-auto-rows: 4 / 5;
+}
+
+main {
+  display: grid;
+  position: absolute;
+  top: 120px;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 3;
+  grid-auto-rows: 5 / 6;
+}
+
+div .services {
+  display: grid;
+  position: absolute;
+  grid-template-columns: 1fr;
+
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  margin: 2em 0 0 0;
+}
+
+.label {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-weight: bold;
+  font-kerning: auto;
+  text-align: center;
+  padding-top: 120px;
+  color: #000;
+  margin: .3em auto;
+  font-size: 1.5em;
+  text-align: center;
+  z-index: 3;
+}
+
+h3 {
+  text-align: center;
+  font-size: 1.25;
+  font-weight: bold;
+  margin: 0;
+  opacity: 1;
+  z-index: 5;
+  color: #9B3220;
+  padding: .5em 0;
+}
+
+article {
+  display: grid;
+  position: relative;
+  grid-template-columns: 1fr;
+  z-index: 10;
+  width: 80%;
+  margin: .5em auto .5em auto;
+}
+
+.photos {
+  z-index: 10;
+  width: 100%;
+  margin: 0 auto 0 auto;
+  border: 6px solid #E6DFD6;
+}
+
+
+
+
+p {
+  font-family: "Roboto", sans-serif;
+}
+
+.lace {
+  display: grid;
+  position: absolute;
+  background-image: url("../img/1x/lace01.png");
+  background-clip: border-box;
+  background-repeat: round;
+  background-position: top left;
+  opacity: .2;
+  width: 100%;
+  height: 100%;
+  grid-auto-rows: 2 / 9;
+  z-index: 2;
+  margin: .5em auto .5em auto;
+}
+
+
+footer#baseline {
+  display: grid;
+  position: relative;
+  font-family: "Roboto", sans-serif;
+  color: #000;
+  background-color: #CEBEAA;
+  padding: 1em;
+  text-align: center;
+  z-index: 1;
+  grid-auto-rows: 6 / 7;
+}
+
+/*........................Media Queries (responsive to screen width) */
+@media all and (min-width: 30em) {
+  .tagline {
+    font-size: 2em;
+  }
+}
+
+@media all and (min-width: 50em) {
+  .container {
+    display: grid;
+    margin: 0;
+    background-color: #B1997D;
+    z-index: 1;
+  }
+
+  #bkg {
+    position: relative;
+    top: 0;
+    height: 100%;
+  }
+
+  .tagline {
+    display: grid;
+    text-align: left;
+    position: relative;
+    padding-top: 1em;
+    /* margin: 10%; */
+    font-size: 2.5em;
+    grid-row: 1/ 2;
+    grid-column: 2 / 4;
+    z-index: 10;
+  }
+
+  .mesh {
+    display: grid;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("../img/1x/mesh01.png");
+    opacity: .5;
+    background-clip: border-box;
+    background-repeat: top;
+    background-position: top left;
+    margin: 0 auto;
+    grid-auto-rows: 1 / 2;
+    z-index: 1;
+  }
+
+  .BUlogo {
+    margin-top: 20px;
+    float: left;
+    padding-left: 10%;
+    padding-bottom: 1em;
+    grid-column: 1 / 2;
+    opacity: 1;
+    grid-row: 1 / 2;
+    z-index: 12;
+  }
+
+  header {
+    display: grid;
+    grid-template-columns: 35% 65%;
+    position: relative;
+    top: 0;
+    text-align: left;
+    grid-auto-rows: 1 / 2;
+    margin: 0 auto 0 auto;
+  }
+
+  #content {
+    display: grid;
+    position: relative;
+    top: 0;
+    margin: 0;
+    height: 100%;
+    border-top: 3px solid #E6DFD6;
+    /* border-top: 3px solid #E6DFD6; */
+    /* grid-template-columns: 1fr;
+    grid-template-rows: 120px auto; */
+  }
+
+  .trim {
+    position: absolute;
+    top: 0;
+  }
+
+  .menu {
+    display: grid;
+    position: relative;
+    grid-template-columns: repeat(3 1fr);
+    background-color: #E6DFD666;
+    margin: 0;
+    grid-row: 2 / 3;
+  }
+
+  nav {
+    position: relative;
+  }
+
+  nav a {
+    display: grid;
+    position: relative;
+    grid-template-columns: repeat(3 1fr);
+    text-align: center;
+    padding: .4em 0 .4em 0;
+    margin: 0 auto 0 auto;
+    width: 100%;
+    grid-row: 2 / 3;
+    border-bottom: none;
+  }
+
+  /* nav a:link {
+    margin-right: 1em;
+article  } */
+  main {
+    clear: both;
+    width: 100%;
+    grid-template-columns: repeat(3 1fr);
+    background-color: #E6DFD666;
+  }
+
+  .label {
+    display: grid;
+    position: absolute;
+    left: 47%;
+    text-align: center;
+    font-size: 1.5em;
+    margin: 0 auto;
+    grid-row: 3 / 4;
+    z-index: 5;
+  }
+
+  .lace {
+    display: grid;
+    position: absolute;
+    background-image: url("../img/1x/lace01.png");
+    background-clip: border-box;
+    background-repeat: round;
+    background-position: top left;
+    opacity: .2;
+    width: 100%;
+    height: 100%;
+    grid-auto-rows: 2 / 4;
+    z-index: 2;
+    /* margin: .5em auto .5em auto; */
+  }
+
+  footer#baseline {
+    display: grid;
+    position: relative;
+    font-family: "Roboto", sans-serif;
+    color: #000;
+    background-color: #CEBEAA;
+    padding: 1em;
+    text-align: center;
+    z-index: 1;
+    grid-auto-rows: 4 / 5;
+    width: 100%;
+  }
+
+  .services {
+    position: absolute;
+    top: 120px;
+    margin-top: 2em;
+    display: grid;
+    width: 30%;
+    grid-auto-columns: 1 / 4;
+  }
+}
+
+/* .trim {
+      display: grid;
+      height: 120px;
+      position: absolute;
+      top: 0;
+      display: grid;
+      opacity: 1;
+      background-image: url("../img/SVG/laceTrim.svg");
+      background-repeat: repeat-x;
+      background-position: left top;
+      z-index: 10;
+      width: 100%;
+      filter: drop-shadow(1px 1px 2px #1E1E1E);
+      grid-auto-rows: 3 / 5;
+    } */
+/* body {
+    max-width: 960px;
+    margin: 0em auto;
+  }
+} */

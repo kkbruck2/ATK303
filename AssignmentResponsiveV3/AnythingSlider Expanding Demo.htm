@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<!-- saved from url=(0159)file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#&panel1-2&panel2-1&panel3-1&panel4-1&panel5-1&panel6-1&panel7-1&panel8-1 -->
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+	<title>TEST</title>
+	<link rel="shortcut icon" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/demos/images/favicon.ico">
+	<link rel="apple-touch-icon" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/demos/images/apple-touch-icon.png">
+
+	<!-- jQuery (required) -->
+	<script src="js/jquery.min.js"></script>
+	<script>
+		window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+	</script>
+
+	<!-- Demo stuff -->
+	<link rel="stylesheet" href="css/page.css">
+
+	<!-- Anything Slider -->
+	<link rel="stylesheet" href="css/anythingslider.css">
+	<script src="js/jquery.anythingslider.js"></script>
+	<script>
+		$(function() {
+			$('#slider1').anythingSlider({
+				//			theme : 'metallic',
+				expand: true,
+				autoPlay: true
+			});
+
+			$('#slider2').anythingSlider({
+				expand: true,
+				showMultiple: 2,
+				changeBy: 2
+			});
+
+			$('#slider3').anythingSlider({
+				expand: true,
+				showMultiple: 1,
+				changeBy: 1
+			});
+
+			$('#slider4').anythingSlider({
+				expand: true,
+				aspectRatio: true,
+				showMultiple: 1,
+				changeBy: 1
+			});
+
+			$('#slider5').anythingSlider({
+				expand: true,
+				aspectRatio: '680:317',
+				showMultiple: 1,
+				changeBy: 1
+			});
+
+			$('#slider6').anythingSlider({
+				expand: true,
+				aspectRatio: 680 / 317,
+				showMultiple: 1,
+				changeBy: 1
+			});
+
+			$('#slider7').anythingSlider({
+				expand: true,
+				aspectRatio: 1.5,
+				showMultiple: 1,
+				changeBy: 1
+			});
+
+			$('#slider8').anythingSlider({
+				expand: true,
+				aspectRatio: 1.5,
+				showMultiple: 2,
+				changeBy: 2
+			});
+
+		});
+	</script>
+
+</head>
+
+<body id="expand">
+
+	<!-- Links to other demo pages & docs -->
+	<div id="nav">
+		<a href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/index.html">Main Demo</a>
+		<a href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/simple.html">Simple Demo</a>
+		<a class="current" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html">Expand Demo</a>
+		<a href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/video.html">Video Demo</a>
+		<a href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/demos.html">FX Demos</a>
+		<a href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/css3.html">CSS3 Demo</a>
+		<a class="play" href="http://jsfiddle.net/Mottie/ycUB6/">Playground</a>
+		<a class="git" href="https://github.com/CSS-Tricks/AnythingSlider/wiki">Documentation</a>
+		<a class="git" href="https://github.com/CSS-Tricks/AnythingSlider/zipball/master">Download</a>
+		<a class="issue" href="https://github.com/CSS-Tricks/AnythingSlider/issues">Issues</a>
+	</div>
+	<!-- End Links -->
+
+	<h1>Expanding Slider Demo*</h1>
+	<h3>* Resize the browser window</h3>
+	<br>
+	<h2>Full page width</h2>
+
+	<!-- Expanding AnythingSlider 100% width -->
+
+	<div id="wrapper1">
+		<div class="anythingSlider anythingSlider-default" style="width: 870px; height: 272px;">
+			<div class="anythingWindow" style="width: 870px; height: 272px;">
+				<ul id="slider1" class="anythingBase horizontal" style="left: -1740px; width: 5220px;">
+					<li class="cloned panel" style="width: 870px; height: 272px;"><img src="./AnythingSlider Expanding Demo_files/slide-env-2.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 870px; height: 272px;"><img src="img/slide-civil-1.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel activePage" style="width: 870px; height: 272px;"><img src="img/slide-env-1.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 870px; height: 272px;"><img src="img/slide-civil-2.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 870px; height: 272px;"><img src="img/slide-env-2.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="cloned panel" style="width: 870px; height: 272px;"><img src="img/slide-civil-1.jpg" alt="" style="width: 100%; height: 100%;"></li>
+				</ul>
+			</div>
+			<div class="anythingControls" style="display: block;">
+				<ul class="thumbNav">
+					<li class="first">
+						<a class="panel1" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#">
+							<span>1</span>
+						</a>
+					</li>
+					<li>
+						<a class="panel2 cur" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#">
+							<span>2</span>
+						</a>
+					</li>
+					<li>
+						<a class="panel3" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#">
+							<span>3</span>
+						</a>
+					</li>
+					<li class="last">
+						<a class="panel4" href="#">
+							<span>4</span>
+						</a>
+					</li>
+				</ul>
+				<a href="#" class="start-stop">
+					<span>Start</span>
+				</a>
+			</div>
+			<span class="arrow back">
+				<a href="#">
+					<span>«</span>
+				</a>
+			</span>
+			<span class="arrow forward">
+				<a href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#">
+					<span>»</span>
+				</a>
+			</span>
+		</div>
+	</div>
+
+	<!-- END AnythingSlider -->
+
+	<div class="spacer"></div>
+
+	<h2>Half page width with two images showing</h2>
+	<!-- Expanding AnythingSlider 50% width -->
+
+	<div id="wrapper2">
+		<div class="anythingSlider anythingSlider-default" style="width: 390px; height: 272px;">
+			<div class="anythingWindow" style="width: 390px; height: 272px;">
+				<ul id="slider2" class="anythingBase horizontal" style="left: -195px; width: 1755px;">
+					<li class="cloned panel" style="width: 195px; height: 272px;"><img src="./AnythingSlider Expanding Demo_files/slide-civil-2.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel activePage" style="width: 195px; height: 272px;"><img src="./AnythingSlider Expanding Demo_files/slide-tele-1.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 195px; height: 272px;"><img src="./AnythingSlider Expanding Demo_files/slide-tele-2.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 195px; height: 272px;"><img src="./AnythingSlider Expanding Demo_files/slide-env-1.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 195px; height: 272px;"><img src="./AnythingSlider Expanding Demo_files/slide-env-2.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 195px; height: 272px;"><img src="./AnythingSlider Expanding Demo_files/slide-civil-1.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 195px; height: 272px;"><img src="./AnythingSlider Expanding Demo_files/slide-civil-2.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="cloned multiple panel" style="width: 195px; height: 272px;"><img src="./AnythingSlider Expanding Demo_files/slide-tele-1.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="cloned multiple panel" style="width: 195px; height: 272px;"><img src="./AnythingSlider Expanding Demo_files/slide-tele-2.jpg" alt="" style="width: 100%; height: 100%;"></li>
+				</ul>
+			</div>
+			<div class="anythingControls" style="display: block;">
+				<ul class="thumbNav">
+					<li class="first"><a class="panel1 cur" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>1</span></a></li>
+					<li><a class="panel2" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>2</span></a></li>
+					<li><a class="panel3" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>3</span></a></li>
+					<li><a class="panel4" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>4</span></a></li>
+					<li><a class="panel5" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>5</span></a></li>
+					<li class="last"><a class="panel6" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>6</span></a></li>
+				</ul><a href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#" class="start-stop"><span>Start</span></a>
+			</div><span class="arrow back"><a href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>«</span></a></span><span class="arrow forward"><a
+					href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>»</span></a></span>
+		</div>
+	</div>
+
+	<!-- END AnythingSlider -->
+
+	<!-- aspectRatio demos -->
+	<div class="spacer"></div>
+
+	<h2>3/4 page width with one image showing (expand : true)</h2>
+	<!-- Expanding AnythingSlider 75% width -->
+	<p>
+		This AnythingSlider (with options: <code>expand : true</code>)
+		will be eager and fill up the wrapper (the surronding div).
+	</p>
+	<p>
+		So the content will scale incorrectly...
+	</p>
+	<p>
+		Styling:
+		<code>
+			#wrapper3 { width: 75%; height: 500px; margin: 0 auto; border: solid red; }
+		</code>
+	</p>
+
+	<div id="wrapper3">
+		<div class="anythingSlider anythingSlider-default" style="width: 630px; height: 472px;">
+			<div class="anythingWindow" style="width: 630px; height: 472px;">
+				<ul id="slider3" class="anythingBase horizontal" style="left: -630px; width: 5040px;">
+					<li class="cloned panel" style="width: 630px; height: 472px;"><img src="./AnythingSlider Expanding Demo_files/slide-civil-2.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel activePage" style="width: 630px; height: 472px;"><img src="./AnythingSlider Expanding Demo_files/slide-tele-1.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 630px; height: 472px;"><img src="./AnythingSlider Expanding Demo_files/slide-tele-2.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 630px; height: 472px;"><img src="./AnythingSlider Expanding Demo_files/slide-env-1.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 630px; height: 472px;"><img src="./AnythingSlider Expanding Demo_files/slide-env-2.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 630px; height: 472px;"><img src="./AnythingSlider Expanding Demo_files/slide-civil-1.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 630px; height: 472px;"><img src="./AnythingSlider Expanding Demo_files/slide-civil-2.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="cloned panel" style="width: 630px; height: 472px;"><img src="./AnythingSlider Expanding Demo_files/slide-tele-1.jpg" alt="" style="width: 100%; height: 100%;"></li>
+				</ul>
+			</div>
+			<div class="anythingControls" style="display: block;">
+				<ul class="thumbNav">
+					<li class="first"><a class="panel1 cur" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>1</span></a></li>
+					<li><a class="panel2" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>2</span></a></li>
+					<li><a class="panel3" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>3</span></a></li>
+					<li><a class="panel4" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>4</span></a></li>
+					<li><a class="panel5" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>5</span></a></li>
+					<li class="last"><a class="panel6" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>6</span></a></li>
+				</ul><a href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#" class="start-stop"><span>Start</span></a>
+			</div><span class="arrow back"><a href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>«</span></a></span><span class="arrow forward"><a
+					href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>»</span></a></span>
+		</div>
+	</div>
+
+	<!-- END AnythingSlider -->
+
+
+	<div class="spacer"></div>
+
+	<h2>3/4 page width, one image (expand : true, aspectRatio : true)</h2>
+	<!-- Expanding AnythingSlider 75% width -->
+
+	<p>
+		This AnythingSlider
+		(with options: <code>expand : true, aspectRatio : true</code>)
+		will scale according to a calculated value for the aspect ratio.
+
+		N.B. the "base"-dimensions, to calculate the aspect ratio from,
+		must be explicitly given by
+		e.g. css: <code>#slider4 { width: 680px; height: 317px; }</code>.
+
+		In this case there will be space over in the height
+		dimension if the window is kept small enough.
+	</p>
+	<p>
+		Styling:
+		<code>
+			#wrapper4 { width: 75%; height: 500px; margin: 0 auto; border: solid green; }
+		</code>
+	</p>
+
+	<div id="wrapper4">
+		<div class="anythingSlider anythingSlider-default" style="width: 630px; height: 293.691px;">
+			<div class="anythingWindow" style="width: 630px; height: 293.691px;">
+				<ul id="slider4" class="anythingBase horizontal" style="left: -630px; width: 5040px;">
+					<li class="cloned panel" style="width: 630px; height: 293.691px;"><img src="./AnythingSlider Expanding Demo_files/slide-civil-2.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel activePage" style="width: 630px; height: 293.691px;"><img src="./AnythingSlider Expanding Demo_files/slide-tele-1.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 630px; height: 293.691px;"><img src="./AnythingSlider Expanding Demo_files/slide-tele-2.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 630px; height: 293.691px;"><img src="./AnythingSlider Expanding Demo_files/slide-env-1.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 630px; height: 293.691px;"><img src="./AnythingSlider Expanding Demo_files/slide-env-2.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 630px; height: 293.691px;"><img src="./AnythingSlider Expanding Demo_files/slide-civil-1.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 630px; height: 293.691px;"><img src="./AnythingSlider Expanding Demo_files/slide-civil-2.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="cloned panel" style="width: 630px; height: 293.691px;"><img src="./AnythingSlider Expanding Demo_files/slide-tele-1.jpg" alt="" style="width: 100%; height: 100%;"></li>
+				</ul>
+			</div>
+			<div class="anythingControls" style="display: block;">
+				<ul class="thumbNav">
+					<li class="first"><a class="panel1 cur" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>1</span></a></li>
+					<li><a class="panel2" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>2</span></a></li>
+					<li><a class="panel3" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>3</span></a></li>
+					<li><a class="panel4" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>4</span></a></li>
+					<li><a class="panel5" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>5</span></a></li>
+					<li class="last"><a class="panel6" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>6</span></a></li>
+				</ul><a href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#" class="start-stop"><span>Start</span></a>
+			</div><span class="arrow back"><a href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>«</span></a></span><span class="arrow forward"><a
+					href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>»</span></a></span>
+		</div>
+	</div>
+
+	<!-- END AnythingSlider -->
+
+
+	<div class="spacer"></div>
+
+	<h2>3/4 page width, one image (expand : true, aspectRatio : '680:317')</h2>
+	<!-- Expanding AnythingSlider 75% width -->
+
+	<p>
+		This AnythingSlider
+		(with options: <code>expand : true, aspectRatio : '680:317'</code>)
+		will scale according to a calculated value from the aspect ratio.
+		So the string '660:317' is parsed and calculated to a float =
+		680/317.
+
+		In this case there will be space over in the height
+		dimension if the window is kept small enough.
+	</p>
+	<p>
+		Styling:
+		<code>
+			#wrapper5 { width: 75%; height: 500px; margin: 0 auto; border: solid green; }
+		</code>
+	</p>
+
+	<div id="wrapper5">
+		<div class="anythingSlider anythingSlider-default" style="width: 630px; height: 293.691px;">
+			<div class="anythingWindow" style="width: 630px; height: 293.691px;">
+				<ul id="slider5" class="anythingBase horizontal" style="left: -630px; width: 5040px;">
+					<li class="cloned panel" style="width: 630px; height: 293.691px;"><img src="./AnythingSlider Expanding Demo_files/slide-civil-2.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel activePage" style="width: 630px; height: 293.691px;"><img src="./AnythingSlider Expanding Demo_files/slide-tele-1.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 630px; height: 293.691px;"><img src="./AnythingSlider Expanding Demo_files/slide-tele-2.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 630px; height: 293.691px;"><img src="./AnythingSlider Expanding Demo_files/slide-env-1.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 630px; height: 293.691px;"><img src="./AnythingSlider Expanding Demo_files/slide-env-2.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 630px; height: 293.691px;"><img src="./AnythingSlider Expanding Demo_files/slide-civil-1.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 630px; height: 293.691px;"><img src="./AnythingSlider Expanding Demo_files/slide-civil-2.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="cloned panel" style="width: 630px; height: 293.691px;"><img src="./AnythingSlider Expanding Demo_files/slide-tele-1.jpg" alt="" style="width: 100%; height: 100%;"></li>
+				</ul>
+			</div>
+			<div class="anythingControls" style="display: block;">
+				<ul class="thumbNav">
+					<li class="first"><a class="panel1 cur" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>1</span></a></li>
+					<li><a class="panel2" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>2</span></a></li>
+					<li><a class="panel3" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>3</span></a></li>
+					<li><a class="panel4" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>4</span></a></li>
+					<li><a class="panel5" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>5</span></a></li>
+					<li class="last"><a class="panel6" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>6</span></a></li>
+				</ul><a href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#" class="start-stop"><span>Start</span></a>
+			</div><span class="arrow back"><a href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>«</span></a></span><span class="arrow forward"><a
+					href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>»</span></a></span>
+		</div>
+	</div>
+
+	<!-- END AnythingSlider -->
+
+
+	<div class="spacer"></div>
+
+	<h2>3/4 page width, one image (expand : true, aspectRatio : 680/317)</h2>
+	<!-- Expanding AnythingSlider 75% width -->
+
+	<p>
+		This AnythingSlider
+		(with options: <code>expand : true, aspectRatio : 680/317</code>)
+		will scale according to the given float (680/317).
+
+		In this case there will be space over in the height
+		dimension if the window is kept small enough.
+	</p>
+	<p>
+		Styling:
+		<code>
+			#wrapper6 { width: 75%; height: 500px; margin: 0 auto; border: solid green; }
+		</code>
+	</p>
+
+	<div id="wrapper6">
+		<div class="anythingSlider anythingSlider-default" style="width: 630px; height: 293.691px;">
+			<div class="anythingWindow" style="width: 630px; height: 293.691px;">
+				<ul id="slider6" class="anythingBase horizontal" style="left: -630px; width: 5040px;">
+					<li class="cloned panel" style="width: 630px; height: 293.691px;"><img src="./AnythingSlider Expanding Demo_files/slide-civil-2.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel activePage" style="width: 630px; height: 293.691px;"><img src="./AnythingSlider Expanding Demo_files/slide-tele-1.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 630px; height: 293.691px;"><img src="./AnythingSlider Expanding Demo_files/slide-tele-2.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 630px; height: 293.691px;"><img src="./AnythingSlider Expanding Demo_files/slide-env-1.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 630px; height: 293.691px;"><img src="./AnythingSlider Expanding Demo_files/slide-env-2.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 630px; height: 293.691px;"><img src="./AnythingSlider Expanding Demo_files/slide-civil-1.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 630px; height: 293.691px;"><img src="./AnythingSlider Expanding Demo_files/slide-civil-2.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="cloned panel" style="width: 630px; height: 293.691px;"><img src="./AnythingSlider Expanding Demo_files/slide-tele-1.jpg" alt="" style="width: 100%; height: 100%;"></li>
+				</ul>
+			</div>
+			<div class="anythingControls" style="display: block;">
+				<ul class="thumbNav">
+					<li class="first"><a class="panel1 cur" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>1</span></a></li>
+					<li><a class="panel2" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>2</span></a></li>
+					<li><a class="panel3" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>3</span></a></li>
+					<li><a class="panel4" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>4</span></a></li>
+					<li><a class="panel5" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>5</span></a></li>
+					<li class="last"><a class="panel6" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>6</span></a></li>
+				</ul><a href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#" class="start-stop"><span>Start</span></a>
+			</div><span class="arrow back"><a href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>«</span></a></span><span class="arrow forward"><a
+					href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>»</span></a></span>
+		</div>
+	</div>
+
+	<!-- END AnythingSlider -->
+
+
+	<div class="spacer"></div>
+
+	<h2>3/4 page width, one image (expand : true, aspectRatio : 1.5)</h2>
+	<!-- Expanding AnythingSlider 75% width -->
+
+	<p>
+		This AnythingSlider
+		(with options: <code>expand : true, aspectRatio : 1.5</code>)
+		will scale according to the given float (1.5).
+
+		In this case there will be space over in the width
+		dimension if the window is kept wide enough.
+	</p>
+	<p>
+		Styling:
+		<code>
+			#wrapper7 { width: 75%; height: 200px; margin: 0 auto; border: solid green; }
+		</code>
+	</p>
+
+	<div id="wrapper7">
+		<div class="anythingSlider anythingSlider-default" style="width: 258px; height: 172px;">
+			<div class="anythingWindow" style="width: 258px; height: 172px;">
+				<ul id="slider7" class="anythingBase horizontal" style="left: -258px; width: 2064px;">
+					<li class="cloned panel" style="width: 258px; height: 172px;"><img src="./AnythingSlider Expanding Demo_files/slide-civil-2.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel activePage" style="width: 258px; height: 172px;"><img src="./AnythingSlider Expanding Demo_files/slide-tele-1.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 258px; height: 172px;"><img src="./AnythingSlider Expanding Demo_files/slide-tele-2.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 258px; height: 172px;"><img src="./AnythingSlider Expanding Demo_files/slide-env-1.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 258px; height: 172px;"><img src="./AnythingSlider Expanding Demo_files/slide-env-2.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 258px; height: 172px;"><img src="./AnythingSlider Expanding Demo_files/slide-civil-1.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 258px; height: 172px;"><img src="./AnythingSlider Expanding Demo_files/slide-civil-2.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="cloned panel" style="width: 258px; height: 172px;"><img src="./AnythingSlider Expanding Demo_files/slide-tele-1.jpg" alt="" style="width: 100%; height: 100%;"></li>
+				</ul>
+			</div>
+			<div class="anythingControls" style="display: block;">
+				<ul class="thumbNav">
+					<li class="first"><a class="panel1 cur" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>1</span></a></li>
+					<li><a class="panel2" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>2</span></a></li>
+					<li><a class="panel3" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>3</span></a></li>
+					<li><a class="panel4" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>4</span></a></li>
+					<li><a class="panel5" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>5</span></a></li>
+					<li class="last"><a class="panel6" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>6</span></a></li>
+				</ul><a href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#" class="start-stop"><span>Start</span></a>
+			</div><span class="arrow back"><a href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>«</span></a></span><span class="arrow forward"><a
+					href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>»</span></a></span>
+		</div>
+	</div>
+
+	<!-- END AnythingSlider -->
+
+
+	<div class="spacer"></div>
+
+	<h2>3/4 page width, one image (expand : true, aspectRatio : 1.5, showMultiple : 2)</h2>
+	<!-- Expanding AnythingSlider 75% width -->
+
+	<p>
+		This AnythingSlider
+		(with options:
+		<code>expand : true, aspectRatio : 1.5, showMultiple : 2</code>
+		)
+		will scale according to the given float (1.5) X showMultiple
+		(1.5*2=3).
+
+		In this case there will be space over in the width
+		dimension if the window is kept wide enough.
+	</p>
+	<p>
+		Styling:
+		<code>
+			#wrapper8 { width: 75%; height: 200px; margin: 0 auto; border: solid green; }
+		</code>
+	</p>
+
+	<div id="wrapper8">
+		<div class="anythingSlider anythingSlider-default activeSlider" style="width: 516px; height: 172px;">
+			<div class="anythingWindow" style="width: 516px; height: 172px;">
+				<ul id="slider8" class="anythingBase horizontal" style="left: -258px; width: 2322px;">
+					<li class="cloned panel" style="width: 258px; height: 172px;"><img src="./AnythingSlider Expanding Demo_files/slide-civil-2.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel activePage" style="width: 258px; height: 172px;"><img src="./AnythingSlider Expanding Demo_files/slide-tele-1.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 258px; height: 172px;"><img src="./AnythingSlider Expanding Demo_files/slide-tele-2.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 258px; height: 172px;"><img src="./AnythingSlider Expanding Demo_files/slide-env-1.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 258px; height: 172px;"><img src="./AnythingSlider Expanding Demo_files/slide-env-2.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 258px; height: 172px;"><img src="./AnythingSlider Expanding Demo_files/slide-civil-1.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="panel" style="width: 258px; height: 172px;"><img src="./AnythingSlider Expanding Demo_files/slide-civil-2.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="cloned multiple panel" style="width: 258px; height: 172px;"><img src="./AnythingSlider Expanding Demo_files/slide-tele-1.jpg" alt="" style="width: 100%; height: 100%;"></li>
+					<li class="cloned multiple panel" style="width: 258px; height: 172px;"><img src="./AnythingSlider Expanding Demo_files/slide-tele-2.jpg" alt="" style="width: 100%; height: 100%;"></li>
+				</ul>
+			</div>
+			<div class="anythingControls" style="display: block;">
+				<ul class="thumbNav">
+					<li class="first"><a class="panel1 cur" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>1</span></a></li>
+					<li><a class="panel2" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>2</span></a></li>
+					<li><a class="panel3" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>3</span></a></li>
+					<li><a class="panel4" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>4</span></a></li>
+					<li><a class="panel5" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>5</span></a></li>
+					<li class="last"><a class="panel6" href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>6</span></a></li>
+				</ul><a href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#" class="start-stop"><span>Start</span></a>
+			</div><span class="arrow back"><a href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>«</span></a></span><span class="arrow forward"><a
+					href="file:///Users/kimberlybrucker/Sites/Code/CSS-Tricks-AnythingSlider-93cb5da/expand.html#"><span>»</span></a></span>
+		</div>
+	</div>
+
+	<!-- END AnythingSlider -->
+
+
+
+
+
+</body>
+
+</html>
